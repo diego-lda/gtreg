@@ -36,15 +36,43 @@ xpert8d_ss(
 )
 }
 \arguments{
+\item{TYX}{This is T(X,Y), the Kroneker product of the known functions of X and Y, W(X) and S(Y).}
+
+\item{tYX}{This is the derivative vector of T(X,Y). Equivalent to t(X,Y) in the paper.}
+
 \item{maxit}{This is the maximum number of iterations that will be run.}
 
 \item{algor}{This is the algorithm that will be used to run the optimisation.}
 
-\item{threshold}{}
+\item{doprimal}{Whether or not the primal version of the problem should be run. Default is false.}
+
+\item{threshold}{This is the threshold level at which weights are eliminated. Default is 1e-5.}
 }
 \value{
-This is the output of the funciton.
+A list containing:\tabular{ll}{
+   \code{llf} \tab The sum of all the elements in \code{llfvec}. \cr
+   \tab \cr
+   \code{e} \tab A numeric vector resulting from \eqn{\hat{b}`T(X,Y)}. \cr
+   \tab \cr
+   \code{eta} \tab  A numeric vector resulting from \eqn{\hat{b}`t(X,Y)}. \cr
+   \tab \cr
+   \code{finalscore} \tab The score of the problem: \eqn{T(X,Y)'e+t(X,Y)'eta}. \cr
+   \tab \cr
+   \code{result} \tab result from the CVXR optimisation. \cr
+   \tab \cr
+   \code{ehat} \tab The same as \code{e} if the primal form is run. \cr
+   \tab \cr
+   \code{etahat} \tab The same as \code{eta} if the primal form is run. \cr
+   \tab \cr
+   \code{h} \tab The number of observations. \cr
+   \tab \cr
+   \code{llfvec} \tab The numeric vector resulting from \code{log(dnorm(e)*(-1/h))}. \cr
+   \tab \cr
+   \code{lamx} \tab The numeric vector containing the penalisation parameters. \cr
+   \tab \cr
+   \code{bmat} \tab The numeric vector containing the parameters of interest, \eqn{\hat{b}}. \cr
+}
 }
 \description{
-This function does the main optimisation for the GTR.
+Run the optimisation of the GTR problem using the CVXR package.
 }

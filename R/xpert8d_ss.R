@@ -2,10 +2,10 @@
 
 #' @title Xpert8d_ss
 #'
-#' @description This function uses the package CVXR, to do the optimisation problem for GTR.
+#' @description Run the optimisation of the GTR problem using the CVXR package.
 #'
-#' @param TYX
-#' @param tYX
+#' @param TYX This is T(X,Y), the Kroneker product of the known functions of X and Y, W(X) and S(Y).
+#' @param tYX This is the derivative vector of T(X,Y). Equivalent to t(X,Y) in the paper.
 #' @param Kscore
 #' @param gam
 #' @param egam
@@ -18,7 +18,7 @@
 #' @param abstol
 #' @param quiet
 #' @param zeros
-#' @param doprimal
+#' @param doprimal Whether or not the primal version of the problem should be run. Default is false.
 #' @param btarg
 #' @param silent
 #' @param nXs
@@ -31,9 +31,32 @@
 #' @param sYgrid
 #' @param bounded
 #' @param Cbound
-#' @param threshold
+#' @param threshold This is the threshold level at which weights are eliminated. Default is 1e-5.
 #'
-#' @return This is the output of the funciton.
+#' @return A list containing:\tabular{ll}{
+#'    \code{llf} \tab The sum of all the elements in \code{llfvec}. \cr
+#'    \tab \cr
+#'    \code{e} \tab A numeric vector resulting from \eqn{\hat{b}`T(X,Y)}. \cr
+#'    \tab \cr
+#'    \code{eta} \tab  A numeric vector resulting from \eqn{\hat{b}`t(X,Y)}. \cr
+#'    \tab \cr
+#'    \code{finalscore} \tab The score of the problem: \eqn{T(X,Y)'e+t(X,Y)'eta}. \cr
+#'    \tab \cr
+#'    \code{result} \tab result from the CVXR optimisation. \cr
+#'    \tab \cr
+#'    \code{ehat} \tab The same as \code{e} if the primal form is run. \cr
+#'    \tab \cr
+#'    \code{etahat} \tab The same as \code{eta} if the primal form is run. \cr
+#'    \tab \cr
+#'    \code{h} \tab The number of observations. \cr
+#'    \tab \cr
+#'    \code{llfvec} \tab The numeric vector resulting from \code{log(dnorm(e)*(-1/h))}. \cr
+#'    \tab \cr
+#'    \code{lamx} \tab The numeric vector containing the penalisation parameters. \cr
+#'    \tab \cr
+#'    \code{bmat} \tab The numeric vector containing the parameters of interest, \eqn{\hat{b}}. \cr
+#' }
+#'
 #' @export
 #'
 #' @examples
