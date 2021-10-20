@@ -2,7 +2,7 @@
 
 #' @title Xpert8d_ss
 #'
-#' @description This function does the main optimisation for the GTR.
+#' @description This function uses the package CVXR, to do the optimisation problem for GTR.
 #'
 #' @param TYX
 #' @param tYX
