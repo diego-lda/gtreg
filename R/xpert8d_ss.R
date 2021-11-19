@@ -55,6 +55,7 @@
 #'    \code{bmat} \tab The numeric vector containing the parameters of interest, \eqn{\hat{b}}. \cr
 #' }
 #'
+#' @import CVXR
 #' @export
 #'
 #' @examples

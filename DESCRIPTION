@@ -15,5 +15,5 @@ BugReports: https://github.com/diego-lda/gtreg/issues
 Suggests:
   glmnet
 VignetteBuilder: glmnet
-
-  
+Imports: 
+    CVXR
