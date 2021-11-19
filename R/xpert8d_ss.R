@@ -1,5 +1,3 @@
-
-
 #' @title Xpert8d_ss
 #'
 #' @description Run the optimisation of the GTR problem using the CVXR package.
