@@ -1,47 +1,53 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # gtreg
 
 <!-- badges: start -->
 <!-- badges: end -->
-This package implements the Gaussian Transform Regression from "Gaussian transforms modeling and the estimation of distributional regression functions" Spady and Stouli (2020).
 
-Mainly, the inference and estimation results for conditional distribution, quantile and density functions implied by flexible Gaussian representations.
+This package provides the software tools to implement Gaussian Transform
+Regression introduced in “Gaussian transforms modeling and the
+estimation of distributional regression functions” Spady and Stouli
+(2020).
+
+With the tools in this package it is possible to obtain inference and
+estimation results for conditional distribution, quantile and density
+functions implied by flexible Gaussian representations.
+
+For further details, please refer to the original text.
+
+### Version 0.2.0
+
+This version is purely a preliminary version!
+
+-   Imports all the required packages.
+-   Contains all the functions necessary to do get core results.
+    **Functions have development names.**
 
 ## Installation
 
-You can install the development version of gtreg like so:
+In order to install this package you need to use the Github version.
+Hopefully in the future a version will be possible.
 
-``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
-```
+Following the steps below, you will be able to install the `gtreg` R
+package from GitHub, in each of R, R Studio, and Displayr.
 
-## Example
+The process is as follows:
 
-This is a basic example which shows you how to solve a common problem:
+1.  Install and load the `devtools` package.
 
-``` r
-library(gtreg)
-## basic example code
-```
+<!-- -->
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+    install.packages("devtools")
+    library(devtools)
 
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
+2.  Install the `gtreg` package using the Github repo location and load
+    it.
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>.
+<!-- -->
 
-You can also embed plots, for example:
+    install_github("diego-lda/gtreg")
+    library(gtreg)
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+All done!
