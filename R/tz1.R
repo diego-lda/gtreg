@@ -1,4 +1,4 @@
-#' TZ Function generator (v2)
+#' TZ Function generator (v1)
 #'
 #' @description This function generates the TZ matrix.
 #'
@@ -9,15 +9,14 @@
 #' @export
 #'
 #' @examples
-TZ2 <- function(X,Y){
+TZ1 <- function(X,Y){
 
   if(!is.matrix(Y)){Y <- matrix(Y,nr=1)}
-  if(!is.matrix(X)){X <- matrix(X,nr=nrow(Y),nc=length(X),byrow=T)}
   nx <- ncol(X)
   ny <- ncol(Y)
   nobs <- nrow(X)
   TZ <- matrix(0,nrow=nobs,ncol=nx*ny)
-  i <- 0
+  i  <- 0
 
   for(j in 1:ny){
     for(k in 1:nx){
@@ -26,4 +25,3 @@ TZ2 <- function(X,Y){
     }}
   return(TZ)
 }
-
