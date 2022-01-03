@@ -25,3 +25,4 @@ Imports:
     xtable,
     orthogonalsplinebasis,
     doParallel
+

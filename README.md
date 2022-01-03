@@ -24,7 +24,7 @@ This version is purely a preliminary version!
 -   Imports all the required packages.
 -   Contains all the functions necessary to do get core results.
     **Functions have development names.**
-    
+
 ## Installation
 
 In order to install this package you need to use the Github version.
