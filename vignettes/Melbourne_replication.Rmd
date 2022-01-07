@@ -7,13 +7,31 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
-```{r setup}
+### Introduction and Overview
+
+
+In this vignette will illustrate the use of `gtreg` with the estimation of a distributional AR(1) model for daily temperatures in Melbourne, Australia.
+
+The estimation of distributional regression functions for this dataset is challenging because the shape of the outcome distribution, today’s temperatures Y_t, given yesterday’s temperature, Y_{t−1}, varies across values of Y_t.
+
+### Load the data
+
+The dataset consists of 3,650 consecutive daily maximum temperatures, and was originally analyzed by Hyndman, Bashtannyk, and Grunwald (1996).
+
+
+```
 library(gtreg)
 ```
+
+Once the data is imported, we need to select the number of continuos variables, `ncont`, the number of splines, `nsplines` and specify that the dependent variable is continuous `X.type`. Finally explicitly define the number of observations `nobs`.
+
+```
+ncont  <- 1
+nspline <- 1
+X.type <- "continuous"
+nobs       <- length(y)
+```
+
+
+
