@@ -1,13 +1,13 @@
-#' Beta2 Check
+#' Beta Check
 #'
-#' @description This function computes the slope and its minimum value.
+#' @description This function computes the values for Beta2(X) and returns them highlighting the minimum value.
 #'
 #' @param bmat
 #' @param Xs
 #' @param nXs
 #' @param nYS
 #'
-#' @return The slope and its minimum valye
+#' @return A list containing the minimum of Beta2(X) and the vector of Beta2(X).
 #' @export
 #'
 #' @examples
