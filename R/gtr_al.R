@@ -1,4 +1,4 @@
-#' GTR Algorithm
+#' GTR Adaptive Lasso
 #'
 #' @description This is a wrap-up function for adaptive lasso GTR/spline-spline. It allows for a Lasso first-step.
 #'

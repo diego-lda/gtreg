@@ -1,6 +1,6 @@
 #' CM Contract Function
 #'
-#' @description This contracts a 'contributions' (n by bbig) matrix by the mask in buse, by removing the appropriate columns.
+#' @description This contracts a 'contributions' (n by big) matrix by the mask in buse, by removing the appropriate columns.
 #' @param cm
 #' @param buse
 #'

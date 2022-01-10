@@ -51,3 +51,8 @@ The process is as follows:
     library(gtreg)
 
 All done!
+
+## Style
+
+In terms of style, to avoid confusion between objects and functions the
+soggested style that we will use is the underscore_separated convention.

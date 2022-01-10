@@ -21,7 +21,7 @@
 #' @export
 #'
 #' @examples
-cqf.func4 <- function(y,x,xgrid,info,Ysing=FALSE,bmat,ng.plot,ydf,yorder,ugrid,nr,nc,delta=1,e0mode=F){
+cqf_helper <- function(y,x,xgrid,info,Ysing=FALSE,bmat,ng.plot,ydf,yorder,ugrid,nr,nc,delta=1,e0mode=F){
 
   nxgrid   <- NROW(xgrid)
 
