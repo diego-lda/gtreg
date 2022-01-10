@@ -42,9 +42,9 @@ QGM.check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
     datmat.mono <- dataprep(y=as.numeric(y),x=x,xgrid=xgrid.qgm,ygrid=ygrid.qgm,bmat=Bmat,
                             info=info,iyknots=iyknots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
                             Ysing=Ysing,e0mode=e0mode,returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,nxgrid=nxgrid,nygrid=nygrid)
-    #    lmin        <- beta2.check(bmat=Bmat,Xs=datmat.mono$Xsgrid,nXs=nXs,nYS=nYS)$b2min
+    #    lmin        <- beta_check(bmat=Bmat,Xs=datmat.mono$Xsgrid,nXs=nXs,nYS=nYS)$b2min
     if(!is.list(datmat.mono$Xsgrid)){
-      lmin <- beta2.check(bmat=Bmat,Xs=datmat.mono$Xsgrid,nXs=nXs,nYS=nYS)$b2min
+      lmin <- beta_check(bmat=Bmat,Xs=datmat.mono$Xsgrid,nXs=nXs,nYS=nYS)$b2min
     }
 
     if(is.list(datmat.mono$Xsgrid)){
@@ -52,7 +52,7 @@ QGM.check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
       for(i in 1:length(datmat.mono$Xsgrid)){
         for(j in 1:dim(datmat.mono$Xsgrid[[i]])[3]){
           # b2min is the smallest value of beta2(X). It should be strictly positive.
-          lmin <- c(b2min,beta2.check(bmat=Bmat,Xs=datmat.mono$Xsgrid[[i]][,,j],nXs=nXs,nYS=nYS)$b2min)
+          lmin <- c(b2min,beta_check(bmat=Bmat,Xs=datmat.mono$Xsgrid[[i]][,,j],nXs=nXs,nYS=nYS)$b2min)
         }
       }
     }

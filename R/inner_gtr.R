@@ -98,14 +98,14 @@ inner.gtr.c <- function(TYX,tYX,y,x,
       if(nYS>2 && nXs >1){
 
         if(!is.list(Xs)){
-          b2min <- beta2.check(bmat=matrix(M%*%res0$bmat,nr=nXs,nc=nYS),Xs=Xs,nXs=nXs,nYS=nYS)$b2min
+          b2min <- beta_check(bmat=matrix(M%*%res0$bmat,nr=nXs,nc=nYS),Xs=Xs,nXs=nXs,nYS=nYS)$b2min
         }
         if(is.list(Xs)){
           b2min <- NULL
           for(i in 1:length(Xs)){
             for(j in 1:dim(Xs[[i]])[3]){
               # b2min is the smallest value of beta2(X). It should be strictly positive.
-              b2min <- c(b2min,beta2.check(bmat=matrix(M%*%res0$bmat,nr=nXs,nc=nYS),Xs=Xs[[i]][,,j],nXs=nXs,nYS=nYS)$b2min)
+              b2min <- c(b2min,beta_check(bmat=matrix(M%*%res0$bmat,nr=nXs,nc=nYS),Xs=Xs[[i]][,,j],nXs=nXs,nYS=nYS)$b2min)
             }
           }
           b2min <- min(b2min)
@@ -151,14 +151,14 @@ inner.gtr.c <- function(TYX,tYX,y,x,
 
           if(nYS==2){
             if(!is.list(Xs.qgm)){
-              mdedy <- beta2.check(bmat=matrix(M%*%res0$bmat,nr=nXs,nc=nYS),Xs=Xs.qgm,nXs=nXs,nYS=nYS)$b2min
+              mdedy <- beta_check(bmat=matrix(M%*%res0$bmat,nr=nXs,nc=nYS),Xs=Xs.qgm,nXs=nXs,nYS=nYS)$b2min
             }
             if(is.list(Xs.qgm)){
               b2min <- NULL
               for(i in 1:length(Xs.qgm)){
                 for(j in 1:dim(Xs.qgm[[i]])[3]){
                   # b2min is the smallest value of beta2(X). It should be strictly positive.
-                  b2min <- c(b2min,beta2.check(bmat=matrix(M%*%res0$bmat,nr=nXs,nc=nYS),Xs=Xs.qgm[[i]][,,j],nXs=nXs,nYS=nYS)$b2min)
+                  b2min <- c(b2min,beta_check(bmat=matrix(M%*%res0$bmat,nr=nXs,nc=nYS),Xs=Xs.qgm[[i]][,,j],nXs=nXs,nYS=nYS)$b2min)
                 }
               }
               mdedy <- min(b2min)
