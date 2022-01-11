@@ -17,7 +17,7 @@
 #' @export
 #'
 #' @examples
-data.info <- function(x, X.type, xdf, xknots=NULL, coord.bare=NULL, coord.spline=NULL, coord.tensor=NULL, nxgrid=101, gridx.cont=F,delta.ok=F){
+data_info <- function(x, X.type, xdf, xknots=NULL, coord.bare=NULL, coord.spline=NULL, coord.tensor=NULL, nxgrid=101, gridx.cont=F,delta.ok=F){
 
   xknots.missing <- F
   if(length(xknots)==0){ xknots.missing <- T }

@@ -44,7 +44,7 @@
 #' @export
 #'
 #' @examples
-dataprep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
+data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
                      bmat=NULL,iyknots=NULL,addxint=T,ydf,yorder,yorth=FALSE,
                      xorth=FALSE,Ysing=FALSE,e0mode=F,mask=NULL,returnTZ=T,returnTZg=F,
                      de0dygrid=NULL,  # For now (used in density prediction) - should be done internally

@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-beta2.check <- function(bmat,Xs,nXs,nYS){
+beta_check <- function(bmat,Xs,nXs,nYS){
 
   beta  <- Xs%*%matrix(bmat,nr=nXs,nc=nYS)
 

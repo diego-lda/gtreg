@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-cmcontract <- function(cm,buse){
+cm_contract <- function(cm,buse){
 
   usevec <- as.logical(buse)
   cm2 <- cm[,usevec]

@@ -39,7 +39,7 @@ QGM.check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
   Bmat        <- matrix(M%*%res$bmat,nr=nXs,nc=nYS)
 
   if(nYS==2){
-    datmat.mono <- dataprep(y=as.numeric(y),x=x,xgrid=xgrid.qgm,ygrid=ygrid.qgm,bmat=Bmat,
+    datmat.mono <- data_prep(y=as.numeric(y),x=x,xgrid=xgrid.qgm,ygrid=ygrid.qgm,bmat=Bmat,
                             info=info,iyknots=iyknots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
                             Ysing=Ysing,e0mode=e0mode,returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,nxgrid=nxgrid,nygrid=nygrid)
     #    lmin        <- beta_check(bmat=Bmat,Xs=datmat.mono$Xsgrid,nXs=nXs,nYS=nYS)$b2min
@@ -61,7 +61,7 @@ QGM.check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
   }
 
   if(nYS!=2 && nXs==2){
-    datmat.mono <- dataprep(y=as.numeric(y),x=x,xgrid=xgrid.qgm,ygrid=ygrid.qgm,bmat=Bmat,
+    datmat.mono <- data_prep(y=as.numeric(y),x=x,xgrid=xgrid.qgm,ygrid=ygrid.qgm,bmat=Bmat,
                             info=info,iyknots=iyknots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
                             Ysing=Ysing,e0mode=e0mode,returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,nxgrid=nxgrid,nygrid=nygrid)
     dBetaY <- datmat.mono$sYgrid%*%t(Bmat)
@@ -72,7 +72,7 @@ QGM.check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
 
   if(nYS!=2 && nXs>2){
     if(easy){
-      datmat.mono <- dataprep(y=as.numeric(y),x=x,ygrid=ygrid.qgm,xgrid=xgrid.qgm,bmat=Bmat,
+      datmat.mono <- data_prep(y=as.numeric(y),x=x,ygrid=ygrid.qgm,xgrid=xgrid.qgm,bmat=Bmat,
                               info=info,iyknots=iyknots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
                               Ysing=Ysing,e0mode=e0mode,returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,nxgrid=nxgrid,nygrid=nygrid)
       mdedy <- NULL
@@ -116,7 +116,7 @@ QGM.check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
           while(nlev!=1 && (maa.down==0 || maa.up==0) && kdex <= 9){
 
             kdex        <- kdex+1
-            datmat.mono <- dataprep(y=as.numeric(y),x=x,ygrid=ygrid.qgm,xgrid=xgridnow,bmat=Bmat,
+            datmat.mono <- data_prep(y=as.numeric(y),x=x,ygrid=ygrid.qgm,xgrid=xgridnow,bmat=Bmat,
                                     info=info,iyknots=iyknots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
                                     Ysing=Ysing,e0mode=e0mode,returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,nxgrid=nxgrid,nygrid=nygrid)
 
@@ -170,7 +170,7 @@ QGM.check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
 
             #for(lnow in 1:nlevel){print(range(as.numeric(line.list[[lnow]]$y)))}
 
-            datmat.mono <- dataprep(y=y,x=x,ygrid=as.numeric(line.list[[l]]$y),xgrid=xgrid.cqf,
+            datmat.mono <- data_prep(y=y,x=x,ygrid=as.numeric(line.list[[l]]$y),xgrid=xgrid.cqf,
                                     bmat=Bmat,info=info,iyknots=iyknots,ydf=ydf,addxint=TRUE,yorder=yorder,
                                     yorth=FALSE,xorth=FALSE,Ysing=Ysing,e0mode=e0mode,returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,
                                     nxgrid=length(line.list[[l]]$x),nygrid=length(line.list[[l]]$y))

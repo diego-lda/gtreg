@@ -29,7 +29,7 @@ cqf_helper <- function(y,x,xgrid,info,Ysing=FALSE,bmat,ng.plot,ydf,yorder,ugrid,
 
     ygrid.p   <- seq(min(y),max(y),len=ng.plot)
     Bmat      <- matrix(bmat,nr=nr,nc=nc)
-    datmatnow <- dataprep(y=ygrid.p,x=xgrid,ygrid=ygrid.p,xgrid=xgrid,bmat=Bmat,
+    datmatnow <- data_prep(y=ygrid.p,x=xgrid,ygrid=ygrid.p,xgrid=xgrid,bmat=Bmat,
                           info=info,iyknots=NULL,ydf=ydf,
                           addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,Ysing=Ysing,
                           returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,#)
@@ -53,7 +53,7 @@ cqf_helper <- function(y,x,xgrid,info,Ysing=FALSE,bmat,ng.plot,ydf,yorder,ugrid,
     ygrid    <- seq(min(y),max(y),len=ng.plot)
 
     if(nr==2){
-      datmatnow <- dataprep(y=as.numeric(y),x=xgrid,ygrid=ygrid,xgrid=xgrid,bmat=Bmat,
+      datmatnow <- data_prep(y=as.numeric(y),x=xgrid,ygrid=ygrid,xgrid=xgrid,bmat=Bmat,
                             info=info,iyknots=NULL,ydf=ydf,
                             addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,Ysing=Ysing,
                             returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,#)
@@ -70,7 +70,7 @@ cqf_helper <- function(y,x,xgrid,info,Ysing=FALSE,bmat,ng.plot,ydf,yorder,ugrid,
 
       while(maa.down==0 || maa.up==0){
 
-        datmatnow <- dataprep(y=as.numeric(y),x=xgrid,ygrid=ygrid,xgrid=xgrid,bmat=Bmat,
+        datmatnow <- data_prep(y=as.numeric(y),x=xgrid,ygrid=ygrid,xgrid=xgrid,bmat=Bmat,
                               info=info,iyknots=NULL,ydf=ydf,
                               addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,Ysing=Ysing,
                               returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,nxgrid=nxgrid,nygrid=ng.plot,e0mode=e0mode)
@@ -135,7 +135,7 @@ cqf_helper <- function(y,x,xgrid,info,Ysing=FALSE,bmat,ng.plot,ydf,yorder,ugrid,
         }
       }
 
-      datmatnow <- dataprep(y=y,x=xgrid,xgrid=xgridnow,ygrid=line.list[[l]]$y,
+      datmatnow <- data_prep(y=y,x=xgrid,xgrid=xgridnow,ygrid=line.list[[l]]$y,
                             bmat=Bmat,info=info,iyknots=NULL,ydf=ydf,yorder=yorder,
                             addxint=TRUE,yorth=FALSE,xorth=FALSE,Ysing=Ysing,e0mode=e0mode,
                             returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,#)

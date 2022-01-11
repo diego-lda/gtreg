@@ -61,7 +61,7 @@ plot3d.gtr <- function(y,x,ugrid=seq(.1,.9,by=.1),res,bmat,type = "CDF",ydf=NULL
   ifelse(length(xgrid)==0, gx <- seq(min(x)-dx, max(x)+dx, len = ng.plot), gx <- xgrid)
   ifelse(length(ygrid)==0, gy <- seq(min(y)-dy, max(y)+dy, len = ng.plot), gy <- ygrid)
 
-  datmat    <- dataprep(y=as.numeric(y),x=x,xgrid=gx,ygrid=gy,bmat=bmat,info=info,iyknots=NULL,ydf=ydf,
+  datmat    <- data_prep(y=as.numeric(y),x=x,xgrid=gx,ygrid=gy,bmat=bmat,info=info,iyknots=NULL,ydf=ydf,
                         addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,Ysing=Ysing,e0mode=e0mode,delta=delta)
   z   <- datmat$egrid
   range(pnorm(z))

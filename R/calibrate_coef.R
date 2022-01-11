@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-califunc <- function(Y, X, qY = NULL, dgp = "dr", link = "probit"){;
+calibrate_coef <- function(Y, X, qY = NULL, dgp = "dr", link = "probit"){;
 
   if(dgp == "loc"){
 

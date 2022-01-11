@@ -227,8 +227,8 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
   #if you need to contract TZ.wt for Hessian use, do it here
   #if(!is.null(mask)){
   if(b.compressed){
-    TZ.wt <- cmcontract(TZ.wt,buse=mask)
-    tZ.wt <- cmcontract(tZ.wt,buse=mask)
+    TZ.wt <- cm_contract(TZ.wt,buse=mask)
+    tZ.wt <- cm_contract(tZ.wt,buse=mask)
   }
   #cat("xnss2 processing at 147\n")
 
@@ -340,7 +340,7 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
     }
 
     if(b.compressed){
-      gradmat <- cmcontract(gradmat,buse=mask)
+      gradmat <- cm_contract(gradmat,buse=mask)
       totgrad <- vcontract(as.vector(totgrad),buse=mask)
     }
     if(maxing){return(totgrad)}
@@ -1083,7 +1083,7 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
       #hfull.look <<- hfull
       gradmat <- gradmat.look #cheating a bit...need to fix
       gradmat.unmasked <- gradmat.look
-      gradmat <- cmcontract(gradmat,buse=mask) #why is this necessary?
+      gradmat <- cm_contract(gradmat,buse=mask) #why is this necessary?
       Jfull <- t(gradmat)%*%gradmat #add in Jfull ops too
       J1 <- Jfull
       h1 <- hfull  #although hfull is not 'full' but masked
