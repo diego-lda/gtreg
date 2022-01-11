@@ -40,7 +40,7 @@ gtr_al(
   beta2 = F,
   Cbound = Inf,
   ugrid = seq(0.1, 0.9, by = 0.1),
-  gam.grid = logspace(-3, 3, 20),
+  gam.grid = log_space(-3, 3, 20),
   algor = "ECOS",
   coord.bare = NULL,
   coord.spline = NULL,

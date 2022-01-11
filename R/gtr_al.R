@@ -54,7 +54,7 @@
 gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,nyg.max=101,Ysing=FALSE,iyknots=NULL,ng.qgm=101,
                    addxint=T,info=NULL,yorth=FALSE,xorth=FALSE,reltol=1.e-03,feastol=1.e-03,abstol=1.e-03,tol.res=1e-1,cval=1e-1,lb=1,threshold=1e-5,
                    e0mode=F,unconstrained=T,constrained=T,AL=F,doprimal=F,fac=1,maxit=90,model=NULL,bounded=F,beta2=F,Cbound=Inf,ugrid=seq(.1,.9,by=.1),
-                   gam.grid=logspace(-3,3,20),algor="ECOS",coord.bare=NULL,coord.spline=NULL,coord.tensor=NULL,easy=T,method="BIC",delta.ok=F,parallel=F
+                   gam.grid=log_space(-3,3,20),algor="ECOS",coord.bare=NULL,coord.spline=NULL,coord.tensor=NULL,easy=T,method="BIC",delta.ok=F,parallel=F
 
 ){
   objval.bic  <- NULL
@@ -205,12 +205,12 @@ gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
     if( !parallel && (length(res.sol)>0 && min(res.sol$eta)>.Machine$double.eps )
         || parallel && (length(res.sol$bmat)>0 && min(res.sol$eta)>.Machine$double.eps)){
       nXs       <- ncol(datmat.now$Xs)
-      if(gam==0){ BIC.vec   <- TIC.func(res=res.sol,TZ=datmat.now$TZ,tZ=datmat.now$tZ,method=method,Ginv=T) }
+      if(gam==0){ BIC.vec   <- tic_func(res=res.sol,TZ=datmat.now$TZ,tZ=datmat.now$tZ,method=method,Ginv=T) }
       if(gam>.Machine$double.eps){
         Adex <- which(abs(res.sol$bmat)>=threshold)
-        BIC.vec <- TIC.func(res=res.sol,TZ=datmat.now$TZ,tZ=datmat.now$tZ,Adex=Adex,method=method,Ginv=T)
+        BIC.vec <- tic_func(res=res.sol,TZ=datmat.now$TZ,tZ=datmat.now$tZ,Adex=Adex,method=method,Ginv=T)
       }
-      # BIC.vec   <- TIC.func(res=res.sol,TZ=datmat.now$TZ,tZ=datmat.now$tZ,method=method,Ginv=T)
+      # BIC.vec   <- tic_func(res=res.sol,TZ=datmat.now$TZ,tZ=datmat.now$tZ,method=method,Ginv=T)
       # ifelse(constrained && length(cvg)>0, nyg <- nyg.now, nyg <- nyg.now <- 0 )
     }
     rm(datmat.now)
@@ -336,12 +336,12 @@ gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
         ggnow         <- ggnow + 1
         ans0[[ggnow]] <- ans$res.sol;
         #Adex          <- which(abs(ans0[[ggnow]]$bmat)>threshold)
-        #BIC.now       <- TIC.func(res=ans0[[ggnow]],TZ=TYX,tZ=tYX,Adex=Adex,method=method)
+        #BIC.now       <- tic_func(res=ans0[[ggnow]],TZ=TYX,tZ=tYX,Adex=Adex,method=method)
         if(length(zeros)>0){
           TYXnow <- TYX[,-zeros]
           tYXnow <- tYX[,-zeros]
         }
-        BIC.now       <- TIC.func(res=ans0[[ggnow]],TZ=TYXnow,tZ=tYXnow,method=method,Ginv=T)
+        BIC.now       <- tic_func(res=ans0[[ggnow]],TZ=TYXnow,tZ=tYXnow,method=method,Ginv=T)
         objval.bic    <- c(objval.bic, BIC.now)
       }
     }

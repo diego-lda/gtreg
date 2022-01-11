@@ -134,12 +134,12 @@ inner.gtr.c <- function(TYX,tYX,y,x,
         # Check QGM
         if(nXs > 1){
           if(nYS>2){
-            datmat.mono <- QGM.check(y=y,x=x,xgrid=xgrid.qgm,res=res0,Ysing=Ysing,iyknots=iyknots,ugrid=ugrid,ng.qgm=ng.qgm,nxgrid=ng.qgm,nygrid=ng.qgm,nXs=nXs,nYS=nYS,ydf=ydf,yorder=yorder,info=info,easy=T,zeros=zeros,e0mode=e0mode)
+            datmat.mono <- qgm_check(y=y,x=x,xgrid=xgrid.qgm,res=res0,Ysing=Ysing,iyknots=iyknots,ugrid=ugrid,ng.qgm=ng.qgm,nxgrid=ng.qgm,nygrid=ng.qgm,nXs=nXs,nYS=nYS,ydf=ydf,yorder=yorder,info=info,easy=T,zeros=zeros,e0mode=e0mode)
             mdedy       <- min(datmat.mono$dedygrid)
             if( mdedy>.Machine$double.eps && !easy ){
-              print("Calling QGM.check")
+              print("Calling qgm_check")
               t_start <- Sys.time()
-              datmat.mono <- QGM.check(y=y,x=x,xgrid.qgm=xgrid.qgm,res=res0,Ysing=Ysing,iyknots=iyknots,ugrid=ugrid,ng.qgm=ng.qgm,nxgrid=ng.qgm,nygrid=ng.qgm,nXs=nXs,nYS=nYS,ydf=ydf,yorder=yorder,info=info,easy=F,zeros=zeros,e0mode=e0mode)
+              datmat.mono <- qgm_check(y=y,x=x,xgrid.qgm=xgrid.qgm,res=res0,Ysing=Ysing,iyknots=iyknots,ugrid=ugrid,ng.qgm=ng.qgm,nxgrid=ng.qgm,nygrid=ng.qgm,nXs=nXs,nYS=nYS,ydf=ydf,yorder=yorder,info=info,easy=F,zeros=zeros,e0mode=e0mode)
               t_end <- Sys.time()
               t_check <- t_end - t_start
               print(paste("It took =",round(t_check,digits=3)))

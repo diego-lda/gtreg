@@ -117,8 +117,8 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
     sYgrid <- cbind(0,1,sYy)
   }
   #Stu Feldman
-  #TZ <- TZ1(X=Xs,Y=YS)
-  #tZ.Ygrid <- TZ1(X=Xs,Y=sYy)
+  #TZ <- tz_form(X=Xs,Y=YS)
+  #tZ.Ygrid <- tz_form(X=Xs,Y=sYy)
 
   #x processing begins.
   if(!is.data.frame(x)) x <- data.frame(x)  #cast x to data.frame always
@@ -183,25 +183,25 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
 
 
   #Stu Feldman
-  #cat("line 101 calls to TZ1 in progress,\n")
+  #cat("line 101 calls to tz_form in progress,\n")
   #cat("xnss2 processing at 119\n")
   Xs.look <<- Xs
-  TZ <- TZ1(X=Xs,Y=YS)
-  tZ <- TZ1(X=Xs,Y=Ys)
+  TZ <- tz_form(X=Xs,Y=YS)
+  tZ <- tz_form(X=Xs,Y=Ys)
   #make synonym for YS,Ys to follow new notation/grid notation
   SY <- YS   #SY is numbers for S(Y)
   sY <- Ys   #sY is numbers for s(Y)
-  #TZgrid <- TZ1(X=Xs,Y=SYgrid) #delayed from above because Xs not set
-  #tZgrid <- TZ1(X=Xs,Y=sYgrid) #delayed from above because Xs not set
+  #TZgrid <- tz_form(X=Xs,Y=SYgrid) #delayed from above because Xs not set
+  #tZgrid <- tz_form(X=Xs,Y=sYgrid) #delayed from above because Xs not set
   #TZgrid.look <<- TZgrid
   #tZgrid.look <<- tZgrid
   #stop(180)
-  #cat("line 178 calls to TZ1 completed,\n")
+  #cat("line 178 calls to tz_form completed,\n")
 
-  #while we are TZ'ing, make the 'giant constraint matrix' via tZB1 if
+  #while we are TZ'ing, make the 'giant constraint matrix' via tzb_form if
   #pentype==1
-  #tZB1 <- function(Xs,sYgrid){
-  if(pentype==1){A <- tZB1(Xs,sYgrid)
+  #tzb_form <- function(Xs,sYgrid){
+  if(pentype==1){A <- tzb_form(Xs,sYgrid)
   cat("giant A matrix dim's are:",dim(A),"\n")
 
 
@@ -612,8 +612,8 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
       Xs <- Xs%*%R
       #Xs[,1] <- 1  #intercept
       #intercept will be handled by construction of R
-      TZ <- TZ1(X=Xs,Y=YS)
-      tZ <- TZ1(X=Xs,Y=Ys)
+      TZ <- tz_form(X=Xs,Y=YS)
+      tZ <- tz_form(X=Xs,Y=Ys)
       bdim <- ncol(TZ)
       Kp <- ncol(Xs)
       nXs <- Kp

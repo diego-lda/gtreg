@@ -316,13 +316,13 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
   # ======================================
 
   #Stu Feldman
-  #cat("line 101 calls to TZ1 in progress,\n")
+  #cat("line 101 calls to tz_form in progress,\n")
   #cat("xnss2 processing at 119\n")
   #Xs.look <<- Xs
 
   if(returnTZ){
-    TZ <- TZ1(X=Xs,Y=YS)
-    tZ <- TZ1(X=Xs,Y=Ys)
+    TZ <- tz_form(X=Xs,Y=YS)
+    tZ <- tz_form(X=Xs,Y=Ys)
     if(is.null(mask)){ TZ.pl <- NULL; tZ.pl <- NULL }
     if(!is.null(mask)){
       TZ.pl <- TZ[,which(mask==1)]
@@ -345,8 +345,8 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
     #      TZgrid.pl[[i]] <- array(0,c(nxgrid,nXs*nYS,ngrids))
     #      tZgrid.pl[[i]] <- array(0,c(nxgrid,nXs*nYS,ngrids))
     #      for(j in 1:ngrids){
-    #         TZgrid[[i]][,,j] <- TZ1(X=Xsgrid[[i]][,,j],Y=SYgrid)
-    #         tZgrid[[i]][,,j] <- TZ1(X=Xsgrid[[i]][,,j],Y=sYgrid)
+    #         TZgrid[[i]][,,j] <- tz_form(X=Xsgrid[[i]][,,j],Y=SYgrid)
+    #         tZgrid[[i]][,,j] <- tz_form(X=Xsgrid[[i]][,,j],Y=sYgrid)
     #         if(is.null(mask)){ TZgrid.pl <- NULL; tZgrid.pl <- NULL }
     #         if(!is.null(mask)){
     #           TZgrid.pl[[i]][,,j] <- TZgrid[[i]][,,j][,which(mask==1)]
@@ -358,8 +358,8 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
     # if(length(xgrid)==length(ygrid)){
     #   if(!gridx.mode){Xsgrid <- Xs}
     #   if(!gridy.mode){SYgrid <- YS; sYgrid <- Ys}
-    #   TZgrid <- TZ1(X=Xsgrid,Y=SYgrid)
-    #   tZgrid <- TZ1(X=Xsgrid,Y=sYgrid)
+    #   TZgrid <- tz_form(X=Xsgrid,Y=SYgrid)
+    #   tZgrid <- tz_form(X=Xsgrid,Y=sYgrid)
     #   if(is.null(mask)){ TZgrid.pl <- NULL; tZgrid.pl <- NULL }
     #   if(!is.null(mask)){
     #     TZgrid.pl <- TZgrid[,which(mask==1)]
@@ -376,8 +376,8 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
     #     tZgrid.pl <- list()
     #   }
     #   for(i in 1:nrow(Xsgrid)){
-    #     TZgrid[,,i] <- TZ2(X=Xsgrid[i,],Y=SYgrid)
-    #     tZgrid[,,i] <- TZ2(X=Xsgrid[i,],Y=sYgrid)
+    #     TZgrid[,,i] <- tz_form(X=Xsgrid[i,],Y=SYgrid)
+    #     tZgrid[,,i] <- tz_form(X=Xsgrid[i,],Y=sYgrid)
     #     if(!is.null(mask)){
     #       TZgrid.pl[[i]] <- TZgrid[,which(mask==1),i]
     #       tZgrid.pl[[i]] <- tZgrid[,which(mask==1),i]
@@ -406,8 +406,8 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
           tZgrid.pl <- list()
         }
         for(j in 1:ngrids){
-          TZgrid[[i]][,,,j] <- TZ1(X=matrix(Xsgrid[[i]][1,,j],nr=nygrid,nc=ncol(Xsgrid[[i]]),byrow=T),Y=SYgrid)
-          tZgrid[[i]][,,,j] <- TZ1(X=matrix(Xsgrid[[i]][1,,j],nr=nygrid,nc=ncol(Xsgrid[[i]]),byrow=T),Y=sYgrid)
+          TZgrid[[i]][,,,j] <- tz_form(X=matrix(Xsgrid[[i]][1,,j],nr=nygrid,nc=ncol(Xsgrid[[i]]),byrow=T),Y=SYgrid)
+          tZgrid[[i]][,,,j] <- tz_form(X=matrix(Xsgrid[[i]][1,,j],nr=nygrid,nc=ncol(Xsgrid[[i]]),byrow=T),Y=sYgrid)
           if(is.null(mask)){ TZgrid.pl <- NULL; tZgrid.pl <- NULL }
           if(!is.null(mask)){
             TZgrid.pl[[i]][,,,j] <- TZgrid[[i]][,,j][,which(mask==1)]
@@ -417,8 +417,8 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
       }
       if(is.matrix(Xsgrid)){
         for(i in 1:nrow(Xsgrid)){
-          TZgrid[,,i] <- TZ2(X=Xsgrid[i,],Y=SYgrid)
-          tZgrid[,,i] <- TZ2(X=Xsgrid[i,],Y=sYgrid)
+          TZgrid[,,i] <- tz_form(X=Xsgrid[i,],Y=SYgrid)
+          tZgrid[,,i] <- tz_form(X=Xsgrid[i,],Y=sYgrid)
           if(!is.null(mask)){
             TZgrid.pl[[i]] <- TZgrid[,which(mask==1),i]
             tZgrid.pl[[i]] <- tZgrid[,which(mask==1),i]
