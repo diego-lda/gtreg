@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-grids.func <- function(x, X.type, nxgrid=101, grid.user = NULL, gridx.cont=F){
+grids_func <- function(x, X.type, nxgrid=101, grid.user = NULL, gridx.cont=F){
   # For multivariate continuous X, grid.user is a list of evaluation points for Xs - not including the first continuous X.
   # x=x; X.type=X.type; nxgrid=ng.plot; grid.user=grid.user; gridx.cont=T
 

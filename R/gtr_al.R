@@ -51,7 +51,7 @@
 #' @export
 #'
 #' @examples
-gtr.al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,nyg.max=101,Ysing=FALSE,iyknots=NULL,ng.qgm=101,
+gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,nyg.max=101,Ysing=FALSE,iyknots=NULL,ng.qgm=101,
                    addxint=T,info=NULL,yorth=FALSE,xorth=FALSE,reltol=1.e-03,feastol=1.e-03,abstol=1.e-03,tol.res=1e-1,cval=1e-1,lb=1,threshold=1e-5,
                    e0mode=F,unconstrained=T,constrained=T,AL=F,doprimal=F,fac=1,maxit=90,model=NULL,bounded=F,beta2=F,Cbound=Inf,ugrid=seq(.1,.9,by=.1),
                    gam.grid=logspace(-3,3,20),algor="ECOS",coord.bare=NULL,coord.spline=NULL,coord.tensor=NULL,easy=T,method="BIC",delta.ok=F,parallel=F
@@ -89,7 +89,7 @@ gtr.al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
     # Check that each spline component as xdf defined:
     if(length(coord.spline)>0){stopifnot(length(xdf)==length(coord.spline))}
 
-    xgrid.qgm  <- grids.func(x=x, X.type=X.type, nxgrid=ng.qgm, gridx.cont=T)
+    xgrid.qgm  <- grids_func(x=x, X.type=X.type, nxgrid=ng.qgm, gridx.cont=T)
     ygrid.qgm  <- seq(min(y),max(y),len=ng.qgm)
 
     if(length(info)==0){ info <- data_info(x=x, X.type=X.type, xdf=xdf, coord.bare=coord.bare, coord.spline=coord.spline, coord.tensor=coord.tensor, nxgrid=ng.qgm, delta.ok=delta.ok) }
@@ -138,7 +138,7 @@ gtr.al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
       # Generate grid of Ys for QGM constraints
       if(nyg>0){
         nygnow <- 0+nyg
-        xgrid  <- grids.func(x=x, X.type=X.type, nxgrid=nygnow, gridx.cont=T)
+        xgrid  <- grids_func(x=x, X.type=X.type, nxgrid=nygnow, gridx.cont=T)
         ygrid  <- seq(min(y),max(y),len=nygnow)
         if(dim(x)[2] == 1 && all(x[,1] == 1) ){
           datmat <- data_info(y=as.numeric(y),x=x,ygrid=ygrid,
@@ -156,7 +156,7 @@ gtr.al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
         rm(datmat)
       }
 
-      ans <- inner.gtr.c( nyg=nyg,TYX=TYX,tYX=tYX,gam=gam,reltol=reltol,feastol=feastol,abstol=abstol,
+      ans <- gtr_compute( nyg=nyg,TYX=TYX,tYX=tYX,gam=gam,reltol=reltol,feastol=feastol,abstol=abstol,
                           doprimal=doprimal,lam.vec=lam.vec,
                           y=y,x=x,info=info,yorder=yorder,ydf=ydf,
                           Ysing=Ysing,nYS=nYS,nXs=nXs,
@@ -220,7 +220,7 @@ gtr.al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
   ################### BEGIN ADAPTIVE LASSO ##########################
 
   # ===============================================
-  # Retrieve info if gtr.al() was previously run separately without adaptive lasso
+  # Retrieve info if gtr_al() was previously run separately without adaptive lasso
 
   if(length(model)>0){
 
@@ -255,7 +255,7 @@ gtr.al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
 
     # Generate X data types if needed
     if(is.null(X.type)){ X.type <- rep("continuous",NCOL(x)) }
-    xgrid.qgm  <- grids.func(x=x, X.type=X.type, nxgrid=ng.qgm, gridx.cont=T)
+    xgrid.qgm  <- grids_func(x=x, X.type=X.type, nxgrid=ng.qgm, gridx.cont=T)
     ygrid.qgm  <- seq(min(y),max(y),len=ng.qgm)
     if(length(info)==0){ info <- data_info(x=x, X.type=X.type, xdf=xdf, coord.bare=coord.bare, coord.spline=coord.spline, coord.tensor=coord.tensor, nxgrid=ng.qgm, delta.ok=delta.ok) }
     datmat     <- data_info(y=as.numeric(y),x=x,ygrid=ygrid.qgm,xgrid=xgrid.qgm,bmat=matrix(res.sol$bmat,nr=nXs,nc=nYS),
@@ -294,7 +294,7 @@ gtr.al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
 
         # Generate grid of Ys for QGM constraints
         if(nyg>0){
-          xgrid  <- grids.func(x=x, X.type=X.type, nxgrid=nyg, gridx.cont=T)
+          xgrid  <- grids_func(x=x, X.type=X.type, nxgrid=nyg, gridx.cont=T)
           ygrid  <- seq(min(y),max(y),len=nyg)
           datmat <- data_info(y=as.numeric(y),x=x,ygrid=ygrid,xgrid=xgrid,
                              info=info,iyknots=iyknots,ydf=ydf,addxint=addxint,yorder=yorder,
@@ -315,7 +315,7 @@ gtr.al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
           tYXnow  <- tYX[,-zeros]
         }
 
-        ans     <- inner.gtr.c( nyg=nyg,TYX=TYXnow,tYX=tYXnow,gam=gam.grid[gg],weights=weights,zeros=zeros,
+        ans     <- gtr_compute( nyg=nyg,TYX=TYXnow,tYX=tYXnow,gam=gam.grid[gg],weights=weights,zeros=zeros,
                                 reltol=reltol,feastol=feastol,abstol=abstol,
                                 doprimal=doprimal,lam.vec=lam.vec,
                                 y=y,x=x,info=info,yorder=yorder,ydf=ydf,

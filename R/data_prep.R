@@ -1,4 +1,4 @@
-#' Dataprep
+#' Data Preparation
 #'
 #' @description A function that takes Y and X and returns design matrices
 #'

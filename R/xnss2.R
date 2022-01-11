@@ -132,12 +132,12 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
   nofactors <- !any(isfactor) #make life easier
 
   #=======info is present, process it==========================
-  #process through gX5 BEFORE model.matrix();(xm not yet defined)
+  #process through gX6 BEFORE model.matrix();(xm not yet defined)
   if(!is.null(info)){
     #cat("xnss2 has found info and is processing it \n")
     info.look <<- info
     x.look <<- x
-    xnow <- gX5(X=x,info=info,orth=xorth)
+    xnow <- gX6(X=x,info=info,orth=xorth)
     #xnow includes splined variables, no intercept, factor variables unexpanded
     xxnow <- data.frame(xnow[[1]],xnow)
     xxnow.look <<- xxnow

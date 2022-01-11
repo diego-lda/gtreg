@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-gX6_bare.data.frame <- function(info,X){
+gX6.bare.data.frame <- function(info,X){
   jnow <- info$coords
   Xnow <- if(jnow=="_intercept") data.frame(int=rep(1,nrow(X))) else X[jnow]
   if(is.factor(Xnow[[1]])) return(Xnow)
