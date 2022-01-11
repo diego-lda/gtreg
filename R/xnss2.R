@@ -104,8 +104,8 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
   Ygrid <- ygrid  #tmp patch rhs
   SYfunc <- yS
   sYfunc <- ys
-  SYy <- EvalBasis(object=SYfunc,x=Ygrid)
-  sYy <- EvalBasis(object=sYfunc,x=Ygrid)
+  SYy <- eval_basis(object=SYfunc,x=Ygrid)
+  sYy <- eval_basis(object=sYfunc,x=Ygrid)
 
   #do the replacement
   if(!Ysing){
@@ -263,7 +263,7 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
 
     #put the penalty here for now
     if(pentype==2){
-      llfvec <- log(dnorm2(e)*dedy)
+      llfvec <- log(data_norm(e)*dedy)
       hpen <- penfunc3(bmat,Xs,Ygrid,SYgrid,sYgrid,llfvec,
                        pickmat,gradmode=TRUE)
       llf <- sum(llfvec)
@@ -277,7 +277,7 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
       #totgrad <- (1-gam)*grad + gam*ellfgrad
     }
     if(pentype==3){
-      llfvec <- log(dnorm2(e)*dedy)
+      llfvec <- log(data_norm(e)*dedy)
       hpen <- penfunc3(bmat,Xs,Ygrid,SYgrid,sYgrid,llfvec,
                        pickmat,gradmode=TRUE)
       llf <- sum(llfvec)
@@ -293,7 +293,7 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
       #bmat or b in this call? rhs Feb 2018
       hpen <- penfunc4(bmat,lam,gradmode=TRUE)
       #call penfunc3 to see what is going on....
-      llfvec <- log(dnorm2(e)*dedy)
+      llfvec <- log(data_norm(e)*dedy)
       hpen3 <- penfunc3(bmat,Xs,Ygrid,SYgrid,sYgrid,llfvec,
                         pickmat,gradmode=FALSE)
 
@@ -304,7 +304,7 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
     }
     if(pentype==5){
       #doing pentype==3 piece first
-      llfvec <- log(dnorm2(e)*dedy)
+      llfvec <- log(data_norm(e)*dedy)
       llf <- sum(llfvec)
       hpen3 <- penfunc3(bmat,Xs,Ygrid,SYgrid,sYgrid,llfvec,
                         pickmat,gradmode=TRUE)
@@ -326,7 +326,7 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
     }
 
     if(pentype==6){
-      llfvec <- log(dnorm2(e)*dedy)
+      llfvec <- log(data_norm(e)*dedy)
       hpen <- penfunc6(bmat,Xs,Ygrid,SYgrid,sYgrid,
                        gradmode=TRUE)
       llf <- sum(llfvec)
@@ -415,7 +415,7 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
     }
     e <- TZ%*%b2
     dedy <- tZ%*%b2
-    llfvec <- log(dnorm2(e)*dedy)
+    llfvec <- log(data_norm(e)*dedy)
     llf <- sum(llfvec)
     if(is.nan(llf)){return(NaN)}
 
@@ -1212,7 +1212,7 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
   beta <- ans$beta
   dedygrid <- beta%*%t(sYgrid)
   egrid <- beta%*%t(SYgrid)
-  phiegrid <- dnorm2(egrid)
+  phiegrid <- data_norm(egrid)
   fgrid <- phiegrid*dedygrid
   ans$dedygrid <- dedygrid
   ans$egrid <- egrid

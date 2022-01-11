@@ -17,7 +17,7 @@ tZB2 <- function(Xs,SYfunc,sYfunc,Ygrid,nsim=29){
   ylo <- min(Ygrid)
   yhi <- max(Ygrid)
   Ygrid.look <<- Ygrid
-  trysY <- EvalBasis(object=sYfunc,x=range(Ygrid))
+  trysY <- eval_basis(object=sYfunc,x=range(Ygrid))
   nsY <- ncol(trysY)+1  #sYfunc produces an object with nsY columns
   #add 1 because sY basis starts with [0,1,...]
   nobs <- nrow(Xs)
@@ -54,7 +54,7 @@ tZB2 <- function(Xs,SYfunc,sYfunc,Ygrid,nsim=29){
     #Ytake.look <<- rbind(Ytake.look,ytake) #tmp just to check
     if(i <4) print(ytake)
     #ysim <- sort(runif(nsim,ylo,yhi))
-    sYnow <- EvalBasis(object=sYfunc,x=ytake)
+    sYnow <- eval_basis(object=sYfunc,x=ytake)
     #do the replacement
     #SYgrid <- cbind(1,Ygrid,SYy[,-1])
     sYgrid <- cbind(0,1,sYnow[,-1])

@@ -139,8 +139,8 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
 
         SYfunc  <- yS
         sYfunc  <- ys
-        SYy     <- EvalBasis(object=SYfunc,x=c(ygrid,max(y0)))
-        sYy     <- EvalBasis(object=sYfunc,x=ygrid)
+        SYy     <- eval_basis(object=SYfunc,x=c(ygrid,max(y0)))
+        sYy     <- eval_basis(object=sYfunc,x=ygrid)
         if(extrapolate==T){
           if(length(ext.dex.l)>0){
             SYy[ext.dex.l,] <- matrix(0,length(ext.dex.l),ncol(SYy))
@@ -289,9 +289,7 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
         for(i in 1:nvars){
           ifelse(length(as.matrix(xgrid$xgrid[[i]]))!=nxgrid, ngrids <- length(xgrid$xgrid[[i]][,1])/nxgrid, ngrids <- 1)
           xgrid.subset <- split(as.data.frame(xgrid$xgrid[[i]]), rep(1:ngrids, each = nxgrid))
-          Xsgrid.tmp[[i]] <- foreach(j = 1:ngrids, .packages=c("orthogonalsplinebasis", "splines")) %dopar% {
-            source("~/Dropbox/Shared/GTR/Rcode/ACS/gX6.generic.R")
-            source("~/Dropbox/Shared/GTR/Rcode/ACS/EvalBasis.R")
+          Xsgrid.tmp[[i]] <- foreach(j = 1:ngrids, .packages=c("orthogonalsplinebasis", "splines","gtreg")) %dopar% {
             if(addxint) Xsgrid.now <- cbind(1,as.matrix(gX6(X=as.data.frame(xgrid.subset[[j]]),info=info,orth=xorth)))#,
             if(!addxint) Xsgrid.now <- as.matrix(gX6(X=as.data.frame(xgrid.subset[[j]]),info=info,orth=xorth))
             return(Xsgrid.now)
@@ -456,7 +454,7 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
       # betagrid     <- Xsgrid%*%bmat
       # egrid        <- betagrid%*%t(SYgrid)
       # dedygrid     <- betagrid%*%t(sYgrid)
-      # phiegrid     <- dnorm2(egrid)
+      # phiegrid     <- data_norm(egrid)
       # fgrid        <- phiegrid*dedygrid*de0dygrid
       betagrid <- list()
       egrid    <- list()
@@ -474,7 +472,7 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
           for(k in 1:nxgrid){
             egrid[[i]][k,,j]    <- betagrid[[i]][,,j][k,]%*%t(SYgrid)
             dedygrid[[i]][k,,j] <- betagrid[[i]][,,j][k,]%*%t(sYgrid)
-            phiegrid[[i]][k,,j] <- dnorm2(egrid[[i]][k,,j])
+            phiegrid[[i]][k,,j] <- data_norm(egrid[[i]][k,,j])
             fgrid[[i]][k,,j]    <- phiegrid[[i]][k,,j]*dedygrid[[i]][k,,j]*de0dygrid
           }
         }

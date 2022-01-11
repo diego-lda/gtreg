@@ -37,17 +37,17 @@ gX6_spline.matrix <- function(info,X,orth=FALSE,xord=4){
   if(orth){
     spline <- SplineBasis(knots)
     spline <- orthogonalize(spline)
-    tx <- EvalBasis(object=spline,x=Xnow)
+    tx <- eval_basis(object=spline,x=Xnow)
   }else{
     # spline <- SplineBasis(knots)
-    # tx <- EvalBasis(object=spline,x=Xnow)
-    tx <- splineDesign(knots=knots,x=Xnow,outer.ok=TRUE,ord=xord) ## waaaay faster than EvalBasis.
+    # tx <- eval_basis(object=spline,x=Xnow)
+    tx <- splineDesign(knots=knots,x=Xnow,outer.ok=TRUE,ord=xord) ## waaaay faster than eval_basis.
     #splineDesign patched out rhs tmp Sep 22 2017 for pqR compat.
   }
 
   if(!is.null(center)){
     if(!orth) spline <- SplineBasis(knots)
-    cen_ev <- EvalBasis(object=spline,x=center)
+    cen_ev <- eval_basis(object=spline,x=center)
     for(i in 1:nrow(tx)){
       tx[i,] <- tx[i,]-cen_ev
     }
@@ -60,7 +60,7 @@ gX6_spline.matrix <- function(info,X,orth=FALSE,xord=4){
   # Xnow <- X[,jnow]
   #if(length(Xnow)==1){Xnow <- as.vector(Xnow)}
   #tx <- evaluate(object=spline,x=Xnow)
-  # tx <- EvalBasis(object=spline,x=Xnow)
+  # tx <- eval_basis(object=spline,x=Xnow)
 
   colnames(tx) <- lapply(1:dim(tx)[2L],FUN=function(i){paste0(nam,".",i)})
 

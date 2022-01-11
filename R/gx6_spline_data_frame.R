@@ -33,17 +33,17 @@ gX6_spline.data.frame <- function(info,X,orth,xord=4){
   if(orth){
     spline <- SplineBasis(knots)
     spline <- orthogonalize(spline)
-    tx <- EvalBasis(object=spline,x=as.matrix(Xnow))
+    tx <- eval_basis(object=spline,x=as.matrix(Xnow))
   }else{
     # spline <- SplineBasis(knots)
-    # tx <- EvalBasis(object=spline,x=Xnow)
-    tx <- splineDesign(knots=knots,x=as.matrix(Xnow),outer.ok=TRUE,ord=xord) ## waaaay faster than EvalBasis.
+    # tx <- eval_basis(object=spline,x=Xnow)
+    tx <- splineDesign(knots=knots,x=as.matrix(Xnow),outer.ok=TRUE,ord=xord) ## waaaay faster than eval_basis.
     #splineDesign patched out rhs tmp Sep 22 2017 for pqR compat.
   }
 
   if(!is.null(center)){
     if(!orth) spline <- SplineBasis(knots)
-    cen_ev <- EvalBasis(object=spline,x=center)
+    cen_ev <- eval_basis(object=spline,x=center)
     for(i in 1:nrow(tx)){
       tx[i,] <- tx[i,]-cen_ev
     }
