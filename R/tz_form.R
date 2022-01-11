@@ -9,10 +9,10 @@
 #' @export
 #'
 #' @examples
-TZ2 <- function(X,Y){
+tz_form <- function(X,Y){
 
   if(!is.matrix(Y)){Y <- matrix(Y,nr=1)}
-  if(!is.matrix(X)){X <- matrix(X,nr=nrow(Y),nc=length(X),byrow=T)}
+  if(!is.matrix(X)){X <- matrix(X,nr=nrow(Y),nc=length(X),byrow=T)} #This line is removed in what used to be TZ1.
   nx <- ncol(X)
   ny <- ncol(Y)
   nobs <- nrow(X)

@@ -1,4 +1,4 @@
-#' IY Knots Function
+#' Y Knots Function
 #'
 #' @description This function generates the knots for the dependent variable.
 #'
@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-iyknots.func <- function(y,e0mode=F,ydf,yorder,delta=1){
+y_knots <- function(y,e0mode=F,ydf,yorder,delta=1){
   if(e0mode){ iyknots <- quantile(y,probs=seq(0,1,length=ydf)) }
   if(!e0mode){
     yabsmax <- max(abs(y))
