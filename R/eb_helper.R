@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-EB <- function(x,M,knots,order){
+eb_helper <- function(x,M,knots,order){
   if(x==knots[length(knots)-order+1]){ ind <- x<=knots } else { ind <- x<knots }
   if(all(ind)|all(!ind))  {
     if(x==knots[length(knots)-order+1])

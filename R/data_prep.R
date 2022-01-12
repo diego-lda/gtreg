@@ -8,7 +8,7 @@
 #' @param ygrid
 #' @param xgrid
 #' @param bmat
-#' @param iyknots
+#' @param y_knots
 #' @param addxint
 #' @param ydf
 #' @param yorder
@@ -45,7 +45,7 @@
 #'
 #' @examples
 data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
-                     bmat=NULL,iyknots=NULL,addxint=T,ydf,yorder,yorth=FALSE,
+                     bmat=NULL,y_knots=NULL,addxint=T,ydf,yorder,yorth=FALSE,
                      xorth=FALSE,Ysing=FALSE,e0mode=F,mask=NULL,returnTZ=T,returnTZg=F,
                      de0dygrid=NULL,  # For now (used in density prediction) - should be done internally
                      extrapolate=T,plot.mode=F,delta=1,
@@ -96,18 +96,18 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
 
     if(ydf > 0){
 
-      if(is.null(iyknots)){iyknots <- quantile(y,probs=seq(0,1,length=ydf))}
+      if(is.null(y_knots)){y_knots <- quantile(y,probs=seq(0,1,length=ydf))}
 
-      iyknots[[1]] <- plyr::round_any(iyknots[[1]],0.001,floor)
-      iyknots[[length(iyknots)]] <- plyr::round_any(iyknots[[length(iyknots)]],0.001,ceiling)
-      iyknots <- round(iyknots,3)
-      names(iyknots) <- NULL
+      y_knots[[1]] <- plyr::round_any(y_knots[[1]],0.001,floor)
+      y_knots[[length(y_knots)]] <- plyr::round_any(y_knots[[length(y_knots)]],0.001,ceiling)
+      y_knots <- round(y_knots,3)
+      names(y_knots) <- NULL
 
       y0<-y;
       if(plot.mode){ y<-ygrid }
 
-      yknots <- expand.knots(iyknots,order=yorder)
-      ys     <- SplineBasis(yknots,order=yorder)
+      y_knots <- expand.knots(y_knots,order=yorder)
+      ys     <- SplineBasis(y_knots,order=yorder)
       if(yorth) ys <- orthogonalize(ys)
       yS     <- integrate(ys)
       Ys     <- evaluate(object=ys,x=y)
@@ -132,8 +132,8 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
         Ygrid <- ygrid
 
         if(extrapolate == T){
-          ext.dex.l <- which(ygrid<iyknots[1])
-          ext.dex.u <- which(ygrid>iyknots[length(iyknots)])
+          ext.dex.l <- which(ygrid<y_knots[1])
+          ext.dex.u <- which(ygrid>y_knots[length(y_knots)])
           ext.dex   <- c(ext.dex.l,ext.dex.u)
         }
 
@@ -504,8 +504,8 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
   ans$Xs       <- Xs
   ans$YS       <- YS
   ans$Ys       <- Ys
-  #if(ydf>0){ ans$yknots <- yknots }
-  ans$iyknots  <- iyknots
+  #if(ydf>0){ ans$y_knots <- y_knots }
+  ans$y_knots  <- y_knots
   ans$btarg    <- btarg
 
   return(ans)

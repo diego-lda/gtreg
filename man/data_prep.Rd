@@ -11,7 +11,7 @@ data_prep(
   ygrid = NULL,
   xgrid = NULL,
   bmat = NULL,
-  iyknots = NULL,
+  y_knots = NULL,
   addxint = T,
   ydf,
   yorder,

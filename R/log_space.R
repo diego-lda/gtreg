@@ -10,7 +10,7 @@
 #' @export
 #'
 #' @examples
-logspace   <- function( a, b, n){
+log_space   <- function( a, b, n){
 
   return(exp(log(10)*seq(a, b, length.out=n)))
 }

@@ -14,7 +14,7 @@
 #' @param nYS
 #' @param ydf
 #' @param yorder
-#' @param iyknots
+#' @param y_knots
 #' @param info
 #' @param Ysing
 #' @param delta
@@ -26,7 +26,7 @@
 #' @export
 #'
 #' @examples
-qgm_check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=101,nygrid,ng.qgm=201,nXs,nYS,ydf,yorder,iyknots=NULL,
+qgm_check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=101,nygrid,ng.qgm=201,nXs,nYS,ydf,yorder,y_knots=NULL,
                       info=info,Ysing=FALSE,delta=1,easy=F,zeros=NULL,e0mode=T){
 
   nobs        <- length(y)
@@ -40,7 +40,7 @@ qgm_check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
 
   if(nYS==2){
     datmat.mono <- data_prep(y=as.numeric(y),x=x,xgrid=xgrid.qgm,ygrid=ygrid.qgm,bmat=Bmat,
-                            info=info,iyknots=iyknots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
+                            info=info,y_knots=y_knots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
                             Ysing=Ysing,e0mode=e0mode,returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,nxgrid=nxgrid,nygrid=nygrid)
     #    lmin        <- beta_check(bmat=Bmat,Xs=datmat.mono$Xsgrid,nXs=nXs,nYS=nYS)$b2min
     if(!is.list(datmat.mono$Xsgrid)){
@@ -62,7 +62,7 @@ qgm_check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
 
   if(nYS!=2 && nXs==2){
     datmat.mono <- data_prep(y=as.numeric(y),x=x,xgrid=xgrid.qgm,ygrid=ygrid.qgm,bmat=Bmat,
-                            info=info,iyknots=iyknots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
+                            info=info,y_knots=y_knots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
                             Ysing=Ysing,e0mode=e0mode,returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,nxgrid=nxgrid,nygrid=nygrid)
     dBetaY <- datmat.mono$sYgrid%*%t(Bmat)
     #lmin   <- cbind(1,matrix(c(min(x)-.1*(max(x)-min(x)),max(x)+.1*(max(x)-min(x))),nr=2,nc=1))%*%t(dBetaY)
@@ -73,7 +73,7 @@ qgm_check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
   if(nYS!=2 && nXs>2){
     if(easy){
       datmat.mono <- data_prep(y=as.numeric(y),x=x,ygrid=ygrid.qgm,xgrid=xgrid.qgm,bmat=Bmat,
-                              info=info,iyknots=iyknots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
+                              info=info,y_knots=y_knots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
                               Ysing=Ysing,e0mode=e0mode,returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,nxgrid=nxgrid,nygrid=nygrid)
       mdedy <- NULL
       if(length(xgrid.qgm[[2]])>0){
@@ -117,7 +117,7 @@ qgm_check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
 
             kdex        <- kdex+1
             datmat.mono <- data_prep(y=as.numeric(y),x=x,ygrid=ygrid.qgm,xgrid=xgridnow,bmat=Bmat,
-                                    info=info,iyknots=iyknots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
+                                    info=info,y_knots=y_knots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
                                     Ysing=Ysing,e0mode=e0mode,returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,nxgrid=nxgrid,nygrid=nygrid)
 
             line.list   <- contourLines(xgridnow[,1],ygrid.qgm,pnorm(datmat.mono$egrid[[1]][,,1]),levels=ugrid)   # MODIFIED
@@ -171,7 +171,7 @@ qgm_check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
             #for(lnow in 1:nlevel){print(range(as.numeric(line.list[[lnow]]$y)))}
 
             datmat.mono <- data_prep(y=y,x=x,ygrid=as.numeric(line.list[[l]]$y),xgrid=xgrid.cqf,
-                                    bmat=Bmat,info=info,iyknots=iyknots,ydf=ydf,addxint=TRUE,yorder=yorder,
+                                    bmat=Bmat,info=info,y_knots=y_knots,ydf=ydf,addxint=TRUE,yorder=yorder,
                                     yorth=FALSE,xorth=FALSE,Ysing=Ysing,e0mode=e0mode,returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,
                                     nxgrid=length(line.list[[l]]$x),nygrid=length(line.list[[l]]$y))
 

@@ -18,10 +18,10 @@ gX6.data.frame <- function(X,info,orth=FALSE){
   for(i in 1:nops){
     type <- info[[i]]$type  #operation type, make life simple
     if(type=="bare"){
-      whold <- gX6_bare.data.frame(info=info[[i]],X=X)
+      whold <- gX6.bare.data.frame(info=info[[i]],X=X)
     }
     if(type=="spline"){
-      whold <- gX6_spline.data.frame(info=info[[i]],X=X,orth=orth)
+      whold <- gX6.spline.data.frame(info=info[[i]],X=X,orth=orth)
     }
     if(type=="tensor"){
       w  <- list()
@@ -30,8 +30,8 @@ gX6.data.frame <- function(X,info,orth=FALSE){
 
       for(j in 1:nt){
         info.now <- info[[i]][[j]]
-        if(info.now$type=="bare"){w[[j]] <- gX6_bare.data.frame(info=info.now,X=X)}
-        if(info.now$type=="spline"){w[[j]] <- gX6_spline.data.frame(info=info.now,X=X,orth=orth)}
+        if(info.now$type=="bare"){w[[j]] <- gX6.bare.data.frame(info=info.now,X=X)}
+        if(info.now$type=="spline"){w[[j]] <- gX6.spline.data.frame(info=info.now,X=X,orth=orth)}
         nw <- c(nw,ncol(w[[j]]))
       }
       nam   <- paste0("tens",i)

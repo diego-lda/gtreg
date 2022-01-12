@@ -29,7 +29,7 @@ gtr_compute(
   info,
   yorder,
   ydf,
-  iyknots = NULL,
+  y_knots = NULL,
   Ysing,
   maxit,
   nXs,

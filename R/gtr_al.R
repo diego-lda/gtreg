@@ -12,7 +12,7 @@
 #' @param yorder
 #' @param nyg.max
 #' @param Ysing
-#' @param iyknots
+#' @param y_knots
 #' @param ng.qgm
 #' @param addxint
 #' @param info
@@ -51,7 +51,7 @@
 #' @export
 #'
 #' @examples
-gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,nyg.max=101,Ysing=FALSE,iyknots=NULL,ng.qgm=101,
+gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,nyg.max=101,Ysing=FALSE,y_knots=NULL,ng.qgm=101,
                    addxint=T,info=NULL,yorth=FALSE,xorth=FALSE,reltol=1.e-03,feastol=1.e-03,abstol=1.e-03,tol.res=1e-1,cval=1e-1,lb=1,threshold=1e-5,
                    e0mode=F,unconstrained=T,constrained=T,AL=F,doprimal=F,fac=1,maxit=90,model=NULL,bounded=F,beta2=F,Cbound=Inf,ugrid=seq(.1,.9,by=.1),
                    gam.grid=log_space(-3,3,20),algor="ECOS",coord.bare=NULL,coord.spline=NULL,coord.tensor=NULL,easy=T,method="BIC",delta.ok=F,parallel=F
@@ -94,13 +94,13 @@ gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
 
     if(length(info)==0){ info <- data_info(x=x, X.type=X.type, xdf=xdf, coord.bare=coord.bare, coord.spline=coord.spline, coord.tensor=coord.tensor, nxgrid=ng.qgm, delta.ok=delta.ok) }
     if(dim(x)[2] == 1 && all(x[,1] == 1)){
-      datmat     <- data_info(y=as.numeric(y),x=x,ygrid=ygrid.qgm,
+      datmat     <- data_prep(y=as.numeric(y),x=x,ygrid=ygrid.qgm,
                              Xs=x,nxgrid=0,
-                             iyknots=iyknots,ydf=ydf,addxint=addxint,yorder=yorder,
+                             y_knots=y_knots,ydf=ydf,addxint=addxint,yorder=yorder,
                              yorth=yorth,xorth=xorth,Ysing=Ysing,e0mode=e0mode,nygrid=ng.qgm)
     }else{
-      datmat     <- data_info(y=as.numeric(y),x=x,ygrid=ygrid.qgm,xgrid=xgrid.qgm,
-                             info=info,iyknots=iyknots,ydf=ydf,addxint=addxint,yorder=yorder,
+      datmat     <- data_prep(y=as.numeric(y),x=x,ygrid=ygrid.qgm,xgrid=xgrid.qgm,
+                             info=info,y_knots=y_knots,ydf=ydf,addxint=addxint,yorder=yorder,
                              yorth=yorth,xorth=xorth,Ysing=Ysing,e0mode=e0mode,nxgrid=ng.qgm,nygrid=ng.qgm)
     }
 
@@ -141,13 +141,13 @@ gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
         xgrid  <- grids_func(x=x, X.type=X.type, nxgrid=nygnow, gridx.cont=T)
         ygrid  <- seq(min(y),max(y),len=nygnow)
         if(dim(x)[2] == 1 && all(x[,1] == 1) ){
-          datmat <- data_info(y=as.numeric(y),x=x,ygrid=ygrid,
+          datmat <- data_prep(y=as.numeric(y),x=x,ygrid=ygrid,
                              Xs=x,nxgrid=0,
-                             iyknots=iyknots,ydf=ydf,addxint=addxint,yorder=yorder,
+                             y_knots=y_knots,ydf=ydf,addxint=addxint,yorder=yorder,
                              yorth=yorth,xorth=xorth,Ysing=Ysing,e0mode=e0mode)
         }else{
-          datmat <- data_info(y=as.numeric(y),x=x,ygrid=ygrid,xgrid=xgrid,
-                             info=info,iyknots=iyknots,ydf=ydf,addxint=addxint,yorder=yorder,
+          datmat <- data_prep(y=as.numeric(y),x=x,ygrid=ygrid,xgrid=xgrid,
+                             info=info,y_knots=y_knots,ydf=ydf,addxint=addxint,yorder=yorder,
                              yorth=yorth,xorth=xorth,Ysing=Ysing,e0mode=e0mode,nxgrid=nygnow)
         }
 
@@ -187,15 +187,15 @@ gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
     }
 
     if(dim(x)[2] == 1 && all(x[,1] == 1)){
-      datmat.now <- data_info(y=as.numeric(y),x=x,#xgrid=xgrid,ygrid=ygrid,
-                             iyknots=iyknots,ydf=ydf,
+      datmat.now <- data_prep(y=as.numeric(y),x=x,#xgrid=xgrid,ygrid=ygrid,
+                             y_knots=y_knots,ydf=ydf,
                              Xs=x,nxgrid=0,
                              addxint=addxint,yorder=yorder,yorth=FALSE,xorth=FALSE,
                              Ysing=Ysing,e0mode=e0mode,returnTZ=T,returnTZg=F)
     }
     else{
-      datmat.now <- data_info(y=as.numeric(y),x=x,#xgrid=xgrid,ygrid=ygrid,
-                             info=info,iyknots=iyknots,ydf=ydf,
+      datmat.now <- data_prep(y=as.numeric(y),x=x,#xgrid=xgrid,ygrid=ygrid,
+                             info=info,y_knots=y_knots,ydf=ydf,
                              addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
                              Ysing=Ysing,e0mode=e0mode,returnTZ=T,returnTZg=F)
     }
@@ -258,8 +258,8 @@ gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
     xgrid.qgm  <- grids_func(x=x, X.type=X.type, nxgrid=ng.qgm, gridx.cont=T)
     ygrid.qgm  <- seq(min(y),max(y),len=ng.qgm)
     if(length(info)==0){ info <- data_info(x=x, X.type=X.type, xdf=xdf, coord.bare=coord.bare, coord.spline=coord.spline, coord.tensor=coord.tensor, nxgrid=ng.qgm, delta.ok=delta.ok) }
-    datmat     <- data_info(y=as.numeric(y),x=x,ygrid=ygrid.qgm,xgrid=xgrid.qgm,bmat=matrix(res.sol$bmat,nr=nXs,nc=nYS),
-                           info=info,iyknots=iyknots,ydf=ydf,addxint=addxint,yorder=yorder,
+    datmat     <- data_prep(y=as.numeric(y),x=x,ygrid=ygrid.qgm,xgrid=xgrid.qgm,bmat=matrix(res.sol$bmat,nr=nXs,nc=nYS),
+                           info=info,y_knots=y_knots,ydf=ydf,addxint=addxint,yorder=yorder,
                            yorth=yorth,xorth=xorth,Ysing=Ysing,e0mode=e0mode,nxgrid=ng.qgm,nygrid=ng.qgm)
     TYX        <- datmat$TZ;
     tYX        <- datmat$tZ
@@ -296,8 +296,8 @@ gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
         if(nyg>0){
           xgrid  <- grids_func(x=x, X.type=X.type, nxgrid=nyg, gridx.cont=T)
           ygrid  <- seq(min(y),max(y),len=nyg)
-          datmat <- data_info(y=as.numeric(y),x=x,ygrid=ygrid,xgrid=xgrid,
-                             info=info,iyknots=iyknots,ydf=ydf,addxint=addxint,yorder=yorder,
+          datmat <- data_prep(y=as.numeric(y),x=x,ygrid=ygrid,xgrid=xgrid,
+                             info=info,y_knots=y_knots,ydf=ydf,addxint=addxint,yorder=yorder,
                              yorth=yorth,xorth=xorth,Ysing=Ysing,e0mode=e0mode,nxgrid=nyg)
           Xsgrid <- datmat$Xsgrid
           sYgrid <- datmat$sYgrid

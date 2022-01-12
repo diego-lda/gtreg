@@ -26,7 +26,7 @@
 #' @param info
 #' @param yorder
 #' @param ydf
-#' @param iyknots
+#' @param y_knots
 #' @param Ysing
 #' @param maxit
 #' @param nXs
@@ -55,7 +55,7 @@ gtr_compute <- function(TYX,tYX,y,x,
                         cvg.mono=NULL,res.sol=NULL,fac=1,fac.now2=NULL,
                         Xs=NULL,sYgrid=NULL,
                         xgrid.qgm=NULL,Xs.qgm=NULL,sYgrid.qgm=NULL,
-                        info,yorder,ydf,iyknots=NULL,Ysing,maxit,nXs,nYS,
+                        info,yorder,ydf,y_knots=NULL,Ysing,maxit,nXs,nYS,
                         lam.vec=NULL,gam=0,ugrid=NULL,dedy.min=NULL,doprimal=F,
                         tol.res,bounded=F,Cbound=Inf,cval=1e-1,algor="ECOS",easy=T, threshold=1e-5,e0mode=F){
 
@@ -134,12 +134,12 @@ gtr_compute <- function(TYX,tYX,y,x,
         # Check QGM
         if(nXs > 1){
           if(nYS>2){
-            datmat.mono <- qgm_check(y=y,x=x,xgrid=xgrid.qgm,res=res0,Ysing=Ysing,iyknots=iyknots,ugrid=ugrid,ng.qgm=ng.qgm,nxgrid=ng.qgm,nygrid=ng.qgm,nXs=nXs,nYS=nYS,ydf=ydf,yorder=yorder,info=info,easy=T,zeros=zeros,e0mode=e0mode)
+            datmat.mono <- qgm_check(y=y,x=x,xgrid=xgrid.qgm,res=res0,Ysing=Ysing,y_knots=y_knots,ugrid=ugrid,ng.qgm=ng.qgm,nxgrid=ng.qgm,nygrid=ng.qgm,nXs=nXs,nYS=nYS,ydf=ydf,yorder=yorder,info=info,easy=T,zeros=zeros,e0mode=e0mode)
             mdedy       <- min(datmat.mono$dedygrid)
             if( mdedy>.Machine$double.eps && !easy ){
               print("Calling qgm_check")
               t_start <- Sys.time()
-              datmat.mono <- qgm_check(y=y,x=x,xgrid.qgm=xgrid.qgm,res=res0,Ysing=Ysing,iyknots=iyknots,ugrid=ugrid,ng.qgm=ng.qgm,nxgrid=ng.qgm,nygrid=ng.qgm,nXs=nXs,nYS=nYS,ydf=ydf,yorder=yorder,info=info,easy=F,zeros=zeros,e0mode=e0mode)
+              datmat.mono <- qgm_check(y=y,x=x,xgrid.qgm=xgrid.qgm,res=res0,Ysing=Ysing,y_knots=y_knots,ugrid=ugrid,ng.qgm=ng.qgm,nxgrid=ng.qgm,nygrid=ng.qgm,nXs=nXs,nYS=nYS,ydf=ydf,yorder=yorder,info=info,easy=F,zeros=zeros,e0mode=e0mode)
               t_end <- Sys.time()
               t_check <- t_end - t_start
               print(paste("It took =",round(t_check,digits=3)))

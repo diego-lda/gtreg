@@ -15,7 +15,7 @@ gtr_al(
   yorder = 4,
   nyg.max = 101,
   Ysing = FALSE,
-  iyknots = NULL,
+  y_knots = NULL,
   ng.qgm = 101,
   addxint = T,
   info = NULL,
