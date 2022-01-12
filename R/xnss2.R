@@ -341,7 +341,7 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
 
     if(b.compressed){
       gradmat <- cm_contract(gradmat,buse=mask)
-      totgrad <- vcontract(as.vector(totgrad),buse=mask)
+      totgrad <- v_contract(as.vector(totgrad),buse=mask)
     }
     if(maxing){return(totgrad)}
     return(-totgrad)
@@ -525,7 +525,7 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
     btarg[nXs+1] <- 1/sdy
   }
 
-  if(b.compressed){bstart <- vcontract(bstart,buse=mask)}
+  if(b.compressed){bstart <- v_contract(bstart,buse=mask)}
 
   #new handling of lam
   #even newer--rhs 14 Mar 2017
@@ -555,8 +555,8 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
   }
   #if lamspecified, we come down to here.
   lam.mat <- lam  #this is the unmasked form of lam
-  if(b.compressed&!is.null(lam))lam <- vcontract(lam,mask)
-  #if(!is.null(mask)&!is.null(lam))lam <- vcontract(lam,mask)
+  if(b.compressed&!is.null(lam))lam <- v_contract(lam,mask)
+  #if(!is.null(mask)&!is.null(lam))lam <- v_contract(lam,mask)
   #lam is now masked and is not altered until the end, lam.mat will
   #be returned as lam
 
@@ -1077,7 +1077,7 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
       dedy
     }
     if(b.compressed){
-      btemp <- vcontract(bfinal,buse=mask)
+      btemp <- v_contract(bfinal,buse=mask)
       #Hess2 uses gr2 and so forth, all of which can see 'mask'
       #hfull <- Hess2(btemp)
       #hfull.look <<- hfull
@@ -1152,7 +1152,7 @@ xnss2 <- function(y,x,info,ydf=4,iyknots=NULL,addxint=T,
     print("evaluating llf at cleanb")
     print(length(cleanb))
     cleanb.2 <- cleanb
-    if(!is.null(mask)){cleanb.2 <- vcontract(cleanb,mask)}
+    if(!is.null(mask)){cleanb.2 <- v_contract(cleanb,mask)}
     cleanllf <- sum(objfn1(cleanb.2)$llfvec)
     ans$cleanllf <- cleanllf
     ans$cleanb <- cleanb

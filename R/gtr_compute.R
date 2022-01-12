@@ -81,13 +81,13 @@ inner.gtr.c <- function(TYX,tYX,y,x,
       doprimal <- T
     }
 
-    try(res0 <- xpert8d_ss(TYX=TYX,tYX=tYX,algor=algor,maxit=maxit,doprimal=doprimal,nXs=nXs,nYS=nYS,Xs=Xs,threshold=threshold,
+    try(res0 <- gtr_solve(TYX=TYX,tYX=tYX,algor=algor,maxit=maxit,doprimal=doprimal,nXs=nXs,nYS=nYS,Xs=Xs,threshold=threshold,
                            pen=pen,gam=gam,weights=weights,zeros=zeros,lam.vec=lam.vec,sYgrid=sYgrid,cval=cval,reltol=tol.res*fac.now,feastol=feastol,abstol=abstol,bounded=bounded,Cbound=Cbound,beta2=F))
 
     if(length(res0)<=1 || max(res0$eta) > 1e6 || ((!(dim(x)[2] == 1 && all(x[,1] == 1)) && length(unique(round(res0$eta,digits=3)))==1))){# || res0$result$status=="optimal_inaccurate"){ # means it doesn't work
       # Try a different algorithm
       ifelse(algor=="ECOS", algor<-"SCS", algor<-"ECOS"); ifelse(algor=="SCS", tol.res <- 1.e-01, tol.res <- 1e-4);
-      try(res0 <- xpert8d_ss(TYX=TYX,tYX=tYX,algor=algor,maxit=maxit,doprimal=doprimal,nXs=nXs,nYS=nYS,Xs=Xs,threshold=threshold,
+      try(res0 <- gtr_solve(TYX=TYX,tYX=tYX,algor=algor,maxit=maxit,doprimal=doprimal,nXs=nXs,nYS=nYS,Xs=Xs,threshold=threshold,
                              pen=pen,gam=gam,weights=weights,zeros=zeros,lam.vec=lam.vec,sYgrid=sYgrid,cval=cval,reltol=tol.res*fac.now,feastol=feastol,abstol=abstol,bounded=bounded,Cbound=Cbound,beta2=F))
     }
 
@@ -112,7 +112,7 @@ inner.gtr.c <- function(TYX,tYX,y,x,
         }
 
         if(b2min<=.Machine$double.eps){
-          try( res0 <- xpert8d_ss(TYX=TYX,tYX=tYX,algor=algor,lam.vec=lam.vec,doprimal=T,nXs=nXs,nYS=nYS,Xs=Xs,threshold=threshold,
+          try( res0 <- gtr_solve(TYX=TYX,tYX=tYX,algor=algor,lam.vec=lam.vec,doprimal=T,nXs=nXs,nYS=nYS,Xs=Xs,threshold=threshold,
                                   pen=pen,gam=gam,weights=weights,zeros=zeros,sYgrid=sYgrid,cval=cval,reltol=tol.res*fac.now,feastol=feastol,abstol=abstol,maxit=maxit,bounded=bounded,Cbound=Cbound,beta2=T) )
         }
         if(length(res0)==1
@@ -123,7 +123,7 @@ inner.gtr.c <- function(TYX,tYX,y,x,
 
           # Try a different algorithm
           ifelse(algor=="ECOS",algor<-"SCS",algor<-"ECOS"); ifelse(algor=="SCS", tol.res <- 1.e-01, tol.res <- 1e-4);
-          try( res0 <- xpert8d_ss(TYX=TYX,tYX=tYX,algor=algor,lam.vec=lam.vec,doprimal=T,nXs=nXs,nYS=nYS,Xs=Xs,threshold=threshold,
+          try( res0 <- gtr_solve(TYX=TYX,tYX=tYX,algor=algor,lam.vec=lam.vec,doprimal=T,nXs=nXs,nYS=nYS,Xs=Xs,threshold=threshold,
                                   pen=pen,gam=gam,weights=weights,zeros=zeros,sYgrid=sYgrid,cval=cval,reltol=tol.res*fac.now,feastol=feastol,abstol=abstol,maxit=maxit,bounded=bounded,Cbound=Cbound,beta2=T) )
         }
 
