@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-gX6_bare.matrix <- function(info,X){
+gX6.bare.matrix <- function(info,X){
   jnow <- info$coords
   Xnow <- if(jnow=="_intercept") rep(1,nrow(X)) else as.numeric(X[,jnow])
   if(!is.null(info$scale)) Xnow <- scale*Xnow

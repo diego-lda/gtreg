@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-gX6_spline.data.frame <- function(info,X,orth,xord=4){
+gX6.spline.data.frame <- function(info,X,orth,xord=4){
   if(is.null(info$knots)){
     print("barf in gX6.spline")
     stop(82)
