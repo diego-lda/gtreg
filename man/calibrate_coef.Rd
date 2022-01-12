@@ -2,7 +2,7 @@
 % Please edit documentation in R/calibrate_coef.R
 \name{calibrate_coef}
 \alias{calibrate_coef}
-\title{Calibration Function}
+\title{Coefficient Calibration Function}
 \usage{
 calibrate_coef(Y, X, qY = NULL, dgp = "dr", link = "probit")
 }

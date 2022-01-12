@@ -26,7 +26,7 @@
 #' @export
 #'
 #' @examples
-QGM.check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=101,nygrid,ng.qgm=201,nXs,nYS,ydf,yorder,iyknots=NULL,
+qgm_check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=101,nygrid,ng.qgm=201,nXs,nYS,ydf,yorder,iyknots=NULL,
                       info=info,Ysing=FALSE,delta=1,easy=F,zeros=NULL,e0mode=T){
 
   nobs        <- length(y)

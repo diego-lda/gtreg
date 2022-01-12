@@ -2,7 +2,7 @@
 % Please edit documentation in R/eb_helper.R
 \name{EB}
 \alias{EB}
-\title{EvalBasis Function (v2)}
+\title{Evaluation of Basis Functions Helper}
 \usage{
 EB(x, M, knots, order)
 }
@@ -13,5 +13,5 @@ EB(x, M, knots, order)
 
 }
 \description{
-This function evluates the basis functions.
+This function helps to evluate the basis functions.
 }

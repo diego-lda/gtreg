@@ -2,7 +2,7 @@
 % Please edit documentation in R/log_space.R
 \name{logspace}
 \alias{logspace}
-\title{Logspace}
+\title{Log Space Function}
 \usage{
 logspace(a, b, n)
 }

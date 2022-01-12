@@ -2,7 +2,7 @@
 % Please edit documentation in R/gtr_al.R
 \name{gtr_al}
 \alias{gtr_al}
-\title{GTR Adaptive Lasso}
+\title{GTR Adaptive Lasso Function.}
 \usage{
 gtr_al(
   y,

@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-tZB1 <- function(Xs,sYgrid){
+tzb_alt <- function(Xs,sYgrid){
 
   nobs <- nrow(Xs)
   nWx <- ncol(Xs)

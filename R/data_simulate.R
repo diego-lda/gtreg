@@ -1,4 +1,4 @@
-#' Simulate Data
+#' Data Simulation Function.
 #'
 #' @description This function generates some fake data.
 #'
@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-simdata <- function(Ydata, Xdata, bvec, n = 100, sde = 1, dgp = "dr", ugrid = NULL, xgrid = NULL){
+data_simulate <- function(Ydata, Xdata, bvec, n = 100, sde = 1, dgp = "dr", ugrid = NULL, xgrid = NULL){
 
   Dat     <- NULL;
   Dat$eps <- rnorm(n);

@@ -2,7 +2,7 @@
 #'
 #' @description This generates the grids of values for the explanatory variable.
 #'
-#' @param x
+#' @param x The explanatory data.
 #' @param X.type
 #' @param nxgrid
 #' @param grid.user

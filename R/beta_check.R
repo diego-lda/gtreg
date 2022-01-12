@@ -2,7 +2,7 @@
 #'
 #' @description This function computes the values for Beta2(X) and returns them highlighting the minimum value.
 #'
-#' @param bmat
+#' @param bmat A matrix with the betas.
 #' @param Xs
 #' @param nXs
 #' @param nYS

@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_basis.R
 \name{eval_basis}
 \alias{eval_basis}
-\title{EvalBasis Function}
+\title{Evaluation of Basis Functions.}
 \usage{
 eval_basis(object, x, ...)
 }

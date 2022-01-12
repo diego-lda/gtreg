@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-tZB2 <- function(Xs,SYfunc,sYfunc,Ygrid,nsim=29){
+tzb_form <- function(Xs,SYfunc,sYfunc,Ygrid,nsim=29){
 
   ylo <- min(Ygrid)
   yhi <- max(Ygrid)

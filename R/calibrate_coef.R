@@ -1,4 +1,4 @@
-#' Calibration Function
+#' Coefficient Calibration Function
 #'
 #' @description This function calibrates coefficients.
 #'

@@ -1,6 +1,6 @@
-#' EvalBasis Function (v2)
+#' Evaluation of Basis Functions Helper
 #'
-#' @description This function evluates the basis functions.
+#' @description This function helps to evluate the basis functions.
 #'
 #' @param x
 #' @param M

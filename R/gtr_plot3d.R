@@ -1,4 +1,4 @@
-#' Plot3d GTR
+#' GTR Plot in 3D
 #'
 #' @description This function is only for plotting simple gtr output with a scalar X for now.
 #'
@@ -52,7 +52,7 @@
 #' @export
 #'
 #' @examples
-plot3d.gtr <- function(y,x,ugrid=seq(.1,.9,by=.1),res,bmat,type = "CDF",ydf=NULL,yorder=NULL,info = NULL, Ysing = FALSE, ng.plot = 30,
+gtr_plot3d <- function(y,x,ugrid=seq(.1,.9,by=.1),res,bmat,type = "CDF",ydf=NULL,yorder=NULL,info = NULL, Ysing = FALSE, ng.plot = 30,
                        ygrid = NULL, xgrid = NULL, dx = 0, dy = 0, FOV = 1, alpha = 1, ncolors = 500, coltype = 1, xlab = "X",
                        ylab = "Y", zlab = "", theta = 70, phi = 30, d = 1, expand = 1, r = sqrt(3), liness = F, shade=NA,
                        blackgrid = NULL, projrq = F, BW = NULL, cex = 1, ticktype = "simple", sizept = 3, colpt = "blue", colines = "red",

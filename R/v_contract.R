@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-vcontract <- function(g,buse){
+v_contract <- function(g,buse){
 
   usevec <- as.logical(buse)
   g2 <- g[usevec]

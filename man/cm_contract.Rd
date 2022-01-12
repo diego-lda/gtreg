@@ -2,12 +2,14 @@
 % Please edit documentation in R/cm_contract.R
 \name{cm_contract}
 \alias{cm_contract}
-\title{CM Contract Function}
+\title{Contribution Matrix Contraction Function}
 \usage{
 cm_contract(cm, buse)
 }
 \arguments{
-\item{buse}{}
+\item{cm}{The contribution matrix}
+
+\item{buse}{A matrix with the Betas to use.}
 }
 \value{
 

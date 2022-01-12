@@ -7,6 +7,8 @@
 grids_func(x, X.type, nxgrid = 101, grid.user = NULL, gridx.cont = F)
 }
 \arguments{
+\item{x}{The explanatory data.}
+
 \item{gridx.cont}{}
 }
 \value{

@@ -7,6 +7,8 @@
 beta_check(bmat, Xs, nXs, nYS)
 }
 \arguments{
+\item{bmat}{A matrix with the betas.}
+
 \item{nYS}{}
 }
 \value{

@@ -14,7 +14,7 @@
 #'
 #'
 #' @examples
-TIC.func <- function(res,TZ,tZ,Ginv=T,Adex=NULL,method="TIC"){
+tic_func <- function(res,TZ,tZ,Ginv=T,Adex=NULL,method="TIC"){
 
   if(length(Adex)==0){ Adex <- 1:ncol(TZ) }
   TZ       <- TZ[,Adex]

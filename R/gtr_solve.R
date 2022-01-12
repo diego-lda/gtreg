@@ -1,6 +1,6 @@
-#' Xpert8d_ss Function
+#' GTR Solver Function
 #'
-#' @description This function solves the optimisation problem.
+#' @description This function solves the optimisation problem. Used to be Xpert8d_ss.
 #'
 #' @param TYX
 #' @param tYX
@@ -35,7 +35,7 @@
 #' @export
 #'
 #' @examples
-xpert8d_ss <- function(TYX,tYX,Kscore=0,gam=0,egam=0,lam=0,lam.vec=NULL,maxit=200,algor="ECOS",
+gtr_solve <- function(TYX,tYX,Kscore=0,gam=0,egam=0,lam=0,lam.vec=NULL,maxit=200,algor="ECOS",
                        reltol=1.e-04,feastol=1.e-04,abstol=1.e-04,quiet=F,zeros=NULL,
                        doprimal=FALSE,btarg=0,silent=F,nXs=NULL,nYS=NULL,weights=1,cval=.1,pen=NULL,beta2=F,Xs=NULL,sYgrid=NULL,bounded=F,Cbound=1e6,threshold=1e-5){
 

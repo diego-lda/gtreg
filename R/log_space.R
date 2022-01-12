@@ -1,4 +1,4 @@
-#' Logspace
+#' Log Space Function
 #'
 #' @description This function does a log transformation onto the log space.
 #'

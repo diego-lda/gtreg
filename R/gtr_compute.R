@@ -1,6 +1,6 @@
-#' Inner GTR Computation Function
+#' GTR Compute Function
 #'
-#' @description This function does the inner computation for GTR.
+#' @description This function does the inner computation for GTR. Used to be called "inner gtr".
 #'
 #' @param TYX
 #' @param tYX
@@ -49,7 +49,7 @@
 #' @export
 #'
 #' @examples
-inner.gtr.c <- function(TYX,tYX,y,x,
+gtr_compute <- function(TYX,tYX,y,x,
                         nyg=0,ng.qgm,weights=1,zeros=NULL,
                         reltol=1e-3,feastol=1e-3,abstol=1e-3,pen=NULL,
                         cvg.mono=NULL,res.sol=NULL,fac=1,fac.now2=NULL,
