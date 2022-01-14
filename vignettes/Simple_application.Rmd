@@ -1,0 +1,113 @@
+---
+title: "Simple Application Example"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Simple Application Example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+### Introduction and Overview
+
+
+In this vignette will illustrate the use of `gtreg` with the estimation of a distributional model for head acceleration in a simulated motorcycle accident, used to test crash helmets.
+
+The estimation of distributional regression functions for this dataset is challenging because the shape of the outcome distribution, head acceleration, given time after impact, varies across time.
+
+### 1) Load the necessary packages.
+
+In order to set up this vignette we need to first load the relevant libraries. As well as loading `gtreg` we need to loas the tools for the parallelisation that we will perform later on.
+
+```
+library(gtreg)
+
+library(doParallel)
+library(doRNG)
+cl <- makeCluster(detectCores())
+registerDoParallel(cl)
+getDoParWorkers()
+```
+
+### 2) Load the data.
+
+The dataset consists of 133 consecutive measurements of head acceleration, measured in G forces, throughout the first 60 milliseconds after a crash. This dataset is used as a simple example, that is easy to compute and understand. The data is contained in the `MASS` package.
+
+After we have loaded the dataset onto R, in order to use the data with this package, we set it up and identify its length, `nobs`, and how many dependent variables are continuous. This is stored as the select the number of continuous variables, `ncont`, the number of splines, `nsplines` and a vector that specifies that the dependent variable is continuous `X.type`.
+
+```
+library(MASS)
+data(mcycle)
+attach(mcycle)
+
+x          <- matrix(times,nc=1)
+y          <- as.numeric(accel)
+nobs       <- length(y)
+ncont  <- 1
+nspline <- 1
+X.type <- "continuous"
+```
+
+### 3) Determine some estimation settings.
+
+Once we have the data, it is necessary to select what type of estimation we would like to carry out.
+
+Should Lasso be implemented in first-step? Should we winsorize if transformation to normality struggles? Do we want to run adaptive lasso? What is the the threshold for the lasso? What algorithm should we use to solve? How many times should we try to solve the optimisation problem and what is the tolerance? How many elements should the grid for the lasso penalties, gamma, have? Is Ysing true? Do we want to check the monotonicity of  beta2(X)? What is starting and the maximum number of grid points in monotonicity constraints, as well as its lower bound? Should the data be normalised beforehand? What is the 
+
+We choose to perform lasso in the first step, to determine what splines are important, but we skip the adaptive version. Normalisation shouldn't struggle, so no need to winsorize. Have choose some values that work okay for the lasso threshold, elements in the gamma grid and monotonicity constraints. Furthermore, we dont pre-normalise.
+
+In terms ofoptimisation, we use the "ECOS" algorithm, as implemented in the `CVXR` package.
+
+```
+lasso <- T            # Lasso in first step?
+wins <- F             # Winsorize?
+AL0 <- AL  <- F       # Adaptive lasso?
+threshold  <- 1e-5    # Lasso threshold
+algor      <- "ECOS"  # Optimisation algorithm
+maxit      <- 500     # Maximum iterations to solve.
+tol        <- 1e-8    # Optimisation tolerance.
+abstol     <- 1e-8    # Optimisation tolerance.
+feastol    <- 1e-8    # Optimisation tolerance.
+reltol     <- 1e-8    # Optimisation tolerance.
+ngam       <- 10      # Elements in gamma grid.
+Ysing      <- F       # CHECK MEANING!
+beta2      <- T       # Should beta2(X)>0 be checked?
+cval       <- 1e-1    # Mono. constraints lower bound
+nyg        <- 1       # Starting points in mono. constraints.
+nyg.max    <- 15      # Max points in mono. constraints.
+e0mode <- F           # Pre-normalisation?
+
+
+# something to do with the monotonicity check.
+ng.qgm  <- ceiling(min(101/ncont^(1+(NCOL(x)-ncont)/10),10001^(1/ncont^(1+(NCOL(x)-ncont)/10))))
+```
+
+### 4) Modelling choices.
+
+Next, we need to define the grid of quantiles that we want to look at. For this example we choose all quantiles between the 5th and 95th percentiles, at 5% increments.
+
+We also need to define the models we want to choose from. We do so by defining some vectors with spline types for both explanatory and dependent variables. We could also use some pre-defined tensors for the explanator splines as well as knots. Similarly, whether some parameters should be penalised or not. Here we keep the intercept (which we include) and raw dependent variable unpenalised.
+
+Furthermore, we need to specify whether y and x are orthogonalised.
+
+
+```
+ugrid.plot <- c(seq(.05,.95,by=.05))    # Quantiles grid
+ugrid      <- ugrid.plot                # Quantile grid for mono. checks
+yorder.dex <- c(0,seq(3,4))             # Models for y
+xdf.dex    <- c(0,seq(3,7))             # Models for x
+coord.tensor <- NULL                    # Pre-defined tensors?
+y_knots    <- NULL                      # Pre-defined knots?
+addxint    <- T                         # Add intercept?  
+lam.vec    <- c(0,0,1,1,1,1)            # Which penalized? c(1,1,1,1,1,1) means 'all'.
+
+yorth      <- FALSE                     # orthogonalised dependent variable?
+xorth      <- FALSE                     # orthogonalised explanatory variable?
+```
+
+
+### 4) Prepare model info and storage.
+
+I'm up to line 165 in pre_motor.R
+
+
