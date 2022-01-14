@@ -16,13 +16,13 @@ Suggests:
   glmnet
 VignetteBuilder: glmnet
 Imports: 
-    pracma,
-    CVXR,
+    orthogonalsplinebasis,
     quantreg,
+    pracma,
     splines,
     MASS,
+    CVXR,
     robustHD,
     xtable,
-    orthogonalsplinebasis,
+    doRNG,
     doParallel
-

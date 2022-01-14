@@ -34,6 +34,7 @@
 #' @return
 #' @export
 #'
+#' @import CVXR
 #' @examples
 gtr_solve <- function(TYX,tYX,Kscore=0,gam=0,egam=0,lam=0,lam.vec=NULL,maxit=200,algor="ECOS",
                        reltol=1.e-04,feastol=1.e-04,abstol=1.e-04,quiet=F,zeros=NULL,
@@ -147,7 +148,7 @@ gtr_solve <- function(TYX,tYX,Kscore=0,gam=0,egam=0,lam=0,lam.vec=NULL,maxit=200
         pd.scs   <- get_problem_data(prob,solver="SCS")
         arglist2 <- list(max_iters=maxit,eps=reltol)
         if(packageVersion("CVXR") > "0.99-7"){
-          SCS_dims  <- SCS.dims_to_solver_dict(pd.scs$data[["dims"]])
+          SCS_dims  <- CVXR:::SCS.dims_to_solver_dict(pd.scs$data[["dims"]])
           time.CVXR <- system.time(
             scs.out1  <- scs::scs(
               A = pd.scs$data[['A']],

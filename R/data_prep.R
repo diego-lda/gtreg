@@ -43,6 +43,8 @@
 #' @return The design matrices for Y and X.
 #' @export
 #'
+#' @importFrom plyr round_any
+#' @importFrom orthogonalsplinebasis expand.knots SplineBasis integrate evaluate
 #' @examples
 data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
                      bmat=NULL,y_knots=NULL,addxint=T,ydf,yorder,yorth=FALSE,
@@ -98,8 +100,8 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
 
       if(is.null(y_knots)){y_knots <- quantile(y,probs=seq(0,1,length=ydf))}
 
-      y_knots[[1]] <- plyr::round_any(y_knots[[1]],0.001,floor)
-      y_knots[[length(y_knots)]] <- plyr::round_any(y_knots[[length(y_knots)]],0.001,ceiling)
+      y_knots[[1]] <- round_any(y_knots[[1]],0.001,floor)
+      y_knots[[length(y_knots)]] <- round_any(y_knots[[length(y_knots)]],0.001,ceiling)
       y_knots <- round(y_knots,3)
       names(y_knots) <- NULL
 

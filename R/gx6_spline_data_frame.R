@@ -10,6 +10,8 @@
 #' @return
 #' @export
 #'
+#' @importFrom splines splineDesign
+#' @importFrom orthogonalsplinebasis expand.knots SplineBasis
 #' @examples
 gX6.spline.data.frame <- function(info,X,orth,xord=4){
   if(is.null(info$knots)){
@@ -17,7 +19,7 @@ gX6.spline.data.frame <- function(info,X,orth,xord=4){
     stop(82)
   }
   knots1 <- info$knots
-  knots <- orthogonalsplinebasis::expand.knots(knots1)
+  knots <- expand.knots(knots1)
   jnow <- info$coords
   center <- info$center
 
