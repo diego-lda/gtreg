@@ -106,8 +106,334 @@ xorth      <- FALSE                     # orthogonalised explanatory variable?
 ```
 
 
-### 4) Prepare model info and storage.
+### 5) Prepare model info and storage.
 
-I'm up to line 165 in pre_motor.R
+In order to run the estimation smoothly, we need to generate a matrix that will contain all the specifications that we want to compare. Furthermore, we need some working variables and vectors to use throughout the estimation.
+
+```
+# Build a matrix with the specifications for the models.
+mod.dex      <- list()          
+mod.dex[[1]] <- yorder.dex
+mod.dex[[2]] <- list()
+mod.dex[[3]] <- list()
+for(i in 1:length(yorder.dex)){ mod.dex[[3]][[i]] <- list() }
+
+
+mod.list     <- NULL          # As no AL, this will contain the solutions.
+b2min        <- NULL          # Store the minimum Beta2  
+b2min.al     <- NULL          # Store the minimum Beta2 from AL
+gam.sel      <- NULL          # Variable to strore the penalty
+gam.bic.vec  <- NULL          # Vector to sore the BIC results
+mstar.vec    <- NULL          # NO IDEA
+nyg.vec      <- NULL          # Vector for the optimisation.
+delta.vec    <- NULL          # Vector for the change in optim
+```
+
+### 6) Set the estimation and result storing loop.
+
+As we have several models that we want to estimate, we need to set up a loop that will take each one and run the estimation. We need to loop through: 
+  
+  - All the models for y `i in 1:length(yorder.dex)`.
+  - All the submodels for y `j in 1:length(ydf.dex)`.
+  - All the models for x `k in 1:length(xdf.dex)`.
+  
+Before estimation is performed we need to prepare/clean some variables that are useful within the estimation block. Once the solutions are obtained in the estimation block, and stored in `mod.list`, we store these results in a `.RData` file. This will make it easier to access our results for later analysis. The remaining sections will all refer to and be contained in the estimation block.
+
+```
+for(i in 1:length(yorder.dex)){
+   
+   if(yorder.dex[i]==0){  ydf.dex <- 0 }
+   if(yorder.dex[i]!=0){  ydf.dex <- seq(yorder.dex[i],yorder.dex[i]+1) }
+
+   mod.dex[[2]][[i]] <- ydf.dex
+   
+   for(j in 1:length(ydf.dex)){
+     
+      mod.dex[[3]][[i]][[j]] <- xdf.dex
+      
+      for(k in 1:length(xdf.dex)){
+      
+       mstar        <- 0          
+       nyg.star     <- 0
+       nyg.max.now  <- nyg.max
+       delta.ok     <- F
+      
+      #####################
+      # ESTIMATION BLOCK  #
+      #####################
+      
+      save(mod,file = paste("example_results_yo=",yorder.dex[i],
+                            "_ydf=",ydf.dex[j],
+                            "_xdf=",xdf.dex[k],
+                            "_lasso_bic.RData", sep="") )
+      mod.list <- c(mod.list,paste("example_results_yo=",yorder.dex[i],
+                                   "_ydf=",ydf.dex[j],
+                                   "_xdf=",xdf.dex[k],
+                                   "_lasso_bic.RData", sep=""))
+          
+      }
+   }
+}
+```
+
+### 7) Checking the model for the explanatory variable.
+
+As an initial step, we need to check what type of splines we have for the explanatory variable. If we use splines, `xdf.dex[k]!=0`, we need a coordinate vector.
+
+```
+ if(xdf.dex[k]==0){
+   coord.bare   <- 1:NCOL(x)
+   coord.spline <- NULL
+ }
+ 
+ if(xdf.dex[k]!=0){
+   coord.bare <- NULL
+   if(NCOL(x)!=nspline){
+     coord.bare <- (nspline+1):NCOL(x)
+   }
+   coord.spline <- 1:nspline
+ }
+```
+
+### 8) Dealing witha a no-spline model (or no lasso).
+
+It might be the case that the particular model we have, doesn't contain any splines for dependent or explanatory variables. Or we have chosen to run the model without the lasso in the first step. If this is the case, we can run the estimation straight away. We do this calling the Gaussian Transform Regression Adaptive Lasso function, `gtr_al()`. The results of which we will store in the `mod` variable, which as seen above, we will store for later use. For specific use of the function and its parameters, please refer to the function documentation. 
+
+If the model calls for splines however, we need a more complicated procedure. We cover this procedure in the following sections.
+
+```
+ if( ydf.dex[j]== 0 && xdf.dex[k]==0 || !lasso){
+   mod <- gtr_al(y=y,x=x,X.type=X.type,xdf=rep(xdf.dex[k],nspline),ydf=ydf.dex[j],yorder=yorder.dex[i],
+                 lam.vec=lam.vec,Ysing=Ysing,ng.qgm=ng.qgm,nyg.max=nyg.max.now,
+                 maxit=maxit,unconstrained=T,constrained=T,AL=F,doprimal=doprimal,
+                 reltol=reltol,feastol=feastol,abstol=abstol,tol.res=tol,
+                 ugrid=ugrid,beta2=beta2,cval=cval,algor=algor,
+                 coord.bare=coord.bare,coord.spline=coord.spline,coord.tensor=coord.tensor,delta.ok=delta.ok)
+   bic.vec <- mod$BIC
+ }else{
+ 
+  ##########################
+  # ESTIMATION W/ SPLINES  #
+  ##########################
+
+ }
+```
+
+### 9) Overview of spline model estimation.
+
+In the case that we have a model that has some splines, we can divide the estimation procedure into three parts. Firstly, we need to generate/clear some variables useful in the estimation, but more importantly build the design matrices for the splines. This we will do using the `data_info()` and `data_prep()` functions. These will give W(X), S(Y), T(X,Y) at sample points and on a grid. Moreover, generate information about each component of W(X) - in particular define knots.
+
+In a second step, we need to find out what penalisation parameter, gamma, will make all the coefficients equal to zero (call this `gam0`). Finally, we can then run the estimation of the models throughout a grid of gammas.
+
+
+```
+# Initialisation of parameters useful in estimation.
+
+bcoefs     <- 1
+kdex       <- 1
+kdex0      <- NULL
+kdex.now   <- NULL
+l1norm     <- 1e6
+ml1norm    <- 1e6
+gam.ok     <- T
+del        <- 0.1
+
+
+# Build the design matrices
+
+info       <- data_info(x=x, X.type=X.type, xdf=rep(xdf.dex[k],nspline),
+                        coord.bare=coord.bare, coord.spline=coord.spline,
+                        coord.tensor=coord.tensor, nxgrid=ng.qgm)
+        
+datmat     <- data_prep(y=as.numeric(y),x=x,#ygrid=ygrid,xgrid=xgrid,info=info,
+                        y_knots=y_knots,ydf=ydf.dex[j],addxint=addxint,yorder=yorder.dex[i],
+                        yorth=yorth,xorth=xorth,Ysing=Ysing,e0mode=e0mode)   
+                        
+nXs <- ncol(datmat$Xs)
+nYS <- ncol(datmat$YS)
+rm(datmat)
+
+##############
+# FIND GAM0  #
+##############
+
+########################
+# RUN ON GRID (0,gam0] #
+########################
+
+```
+
+### 10) Finding `gam0`.
+
+In order to find the smallest gamma such that all coefficients are zero, we run a loop while we haven't meet the condition `gam.ok <- F` and the mean of the coefficients is different from zero, or alternatively the length of the kdex is zero.
+
+Inside the loop, we first check whether we should still be running the loop and how we should update the gamma parameter. Once the gamma has been updated, we then run the estimation using `gtr_al()`. Finally we check the results and whether the coefficients are all zero. If this is the case, we can stop the loop.
+
+Once the loop is complete, we make sure the the right `gam0` parameter is stored. After this is complete, we can then run the model on a grid of gammas.
+
+```
+while((gam.ok && mean(bcoefs)!=0) || length(kdex0)==0){ 
+
+  # Run some checks on parameters
+  # -----------------------------
+  
+  if(length(kdex.now)==0 && (mean(bcoefs)==0 || !gam.ok)){
+    kdex0    <- kdex-1 
+    kdex.now <- 0 
+    gam.ok   <- T
+  }
+  
+  if(length(kdex0)==0){ kdex <- kdex + 1 }
+  if(length(kdex0)>0){
+    kdex.now <- kdex.now + 1
+    kdex     <- kdex0 + del*kdex.now
+  }
+  
+  # Update the value of gam0
+  # ------------------------
+  
+  print(paste("kdex now is =",kdex))
+  gam0      <- exp(kdex)
+  print(paste("gam0 now is =",gam0))
+  
+  # Run the estimation with new gam0
+  # --------------------------------
+  
+  mod     <- gtr_al(y=y,x=x,X.type=X.type,gam=gam0,xdf=rep(xdf.dex[k],nspline),
+                    ydf=ydf.dex[j],yorder=yorder.dex[i],
+                    lam.vec=lam.vec,Ysing=Ysing,ng.qgm=ng.qgm,
+                    nyg.max=nyg.max.now,
+                    maxit=maxit,unconstrained=T,constrained=T,AL=F,
+                    doprimal=doprimal,reltol=reltol,feastol=feastol,
+                    abstol=abstol,tol.res=tol,ugrid=ugrid,beta2=beta2,
+                    cval=cval,algor=algor,e0mode=e0mode,coord.bare=coord.bare,
+                    coord.spline=coord.spline,coord.tensor=coord.tensor)
+  
+  res.now <- mod$res
+  
+  # Check if the coefs are all zeros
+  # --------------------------------
+  
+  if(length(res.now)<=1 || length(res.now$bmat)==0){ bcoefs <- 0 }
+  if(length(res.now)>1 && length(res.now$bmat)>0){# && length(res.now$bmat)>0){
+    bcoefs <- res.now$bmat[-c(1,nXs+1)]*(abs(res.now$bmat[-c(1,nXs+1)])>threshold)
+  }
+  
+  if(length(bcoefs)!=0){
+    print(abs(bcoefs))
+    print(paste("l1 norm coefs now is =",sum(abs(bcoefs))))
+    l1norm  <- c(l1norm,sum(abs(bcoefs)))
+    ml1norm <- c(ml1norm,mean(l1norm))
+    if(l1norm[length(l1norm)]-l1norm[length(l1norm)-1]>0){ 
+      gam.ok  <- F 
+      l1norm  <- l1norm[-length(l1norm)] 
+      ml1norm <- ml1norm[length(ml1norm)]
+    }
+  }
+  
+}
+
+# Store the final gam0 if 
+# --------------------------------
+
+if(!gam.ok) gam0 <- exp(kdex-del)
+
+```
+
+### 11) Running the model of a grid `(0, gam0]`.
+
+First of all, we need to check that the previous section actually found a value of gamma that is valid. If not, we store a series of `NULL` values.
+
+```
+if(gam0 == exp(1.1)){ 
+  mod          <- NULL
+  mod.al       <- NULL 
+  ans          <- NULL
+  ans.al       <- NULL
+  ans$b2min    <- Inf 
+  ans.al$b2min <- Inf
+}
+```
+
+In the case that we did find a valid `gam0`, we need to first define a grid of values for gamma, as well as some parameters for estimation. Then, for each gamma in this grid we run the estimation. This step can be done in parallel to speed the estimation. All we need to store from each model is the BIC. After this step is complete, we then find out which model had the smallest BIC and re-run its estimation and store the results. We can also plot the BIC across models.
+
+
+```
+if(gam0 != exp(1.1)){
+ 
+# Define gam grid
+# -------------------------
+
+gam.grid <- log_space(-1,log(gam0)/log(10),ngam)  # Double check
+  
+  
+# Prepare variables for estim
+# ---------------------------
+
+bic.vec  <- NULL
+bic.vec2 <- NULL
+bic.up <- 0
+m.vec  <- NULL
+m        <- 0
+b.bic    <- c(1,1,1)
+
+# Run estimation in parallel
+# ---------------------------
+
+mod.bic <- foreach(m = 1:length(gam.grid), 
+                  .packages=c("orthogonalsplinebasis", "splines",
+                              "CVXR", "doParallel","gtreg")) 
+                  %do% {
+                  
+    mod.bic <- gtr_al(y=y,x=x,X.type=X.type,xdf=rep(xdf.dex[k],nspline),
+                      ydf=ydf.dex[j],yorder=yorder.dex[i],lam.vec=lam.vec,
+                      gam=gam.grid[m],Ysing=Ysing,ng.qgm=ng.qgm,nyg.max=nyg.max.now,
+                      maxit=maxit,unconstrained=T,constrained=T,AL=F,
+                      doprimal=doprimal,reltol=reltol,feastol=feastol,abstol=abstol,
+                      tol.res=tol,ugrid=ugrid,beta2=beta2,cval=cval,algor=algor,
+                      e0mode=e0mode,coord.bare=coord.bare,coord.spline=coord.spline,
+                      coord.tensor=coord.tensor,delta.ok=delta.ok,parallel=T)
+  
+    return(mod.bic$BIC)
+}
+
+for(m in 1:length(gam.grid)){
+  if(length(mod.bic[[m]])==0){ mod.bic[[m]] <- NA }
+  bic.vec <- c(bic.vec,mod.bic[[m]])
+}
+
+# Use BIC to determine selection
+# ------------------------------
+
+mstar    <- which.min(bic.vec)
+mod.bic <- gtr_al(y=y,x=x,X.type=X.type,xdf=rep(xdf.dex[k],nspline),ydf=ydf.dex[j],
+                  yorder=yorder.dex[i],lam.vec=lam.vec,gam=gam.grid[mstar],Ysing=Ysing,
+                  ng.qgm=ng.qgm,nyg.max=nyg.max.now,maxit=maxit,unconstrained=T,
+                  constrained=T,AL=F,doprimal=doprimal,reltol=reltol,feastol=feastol,
+                  abstol=abstol,tol.res=tol,ugrid=ugrid,beta2=beta2,cval=cval,
+                  algor=algor,e0mode=e0mode,coord.bare=coord.bare,
+                  coord.spline=coord.spline,coord.tensor=coord.tensor,delta.ok=delta.ok)
+                  
+stopifnot(mod.bic$BIC==bic.vec[mstar])
+b.bic    <- mod.bic$res$bmat
+gam.bic  <- gam.grid
+mod      <- mod.bic
+nyg.star <- mod.bic$nyg
+
+rm(mod.bic);
+
+if(length(bic.vec)>1){
+  plot(bic.vec)
+  abline(v=mstar)
+}
+
+}
+```
+
+
+
+
+
+
 
 
