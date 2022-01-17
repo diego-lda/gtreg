@@ -17,13 +17,14 @@ functions implied by flexible Gaussian representations.
 
 For further details, please refer to the original text.
 
-### Version 0.2.0
+### Version 0.3.0
 
-This version is purely a preliminary version!
+This version is a preliminary version!
 
--   Imports all the required packages.
 -   Contains all the functions necessary to do get core results.
-    **Functions have development names.**
+-   Imports necessary packages for functions.
+-   Has an simple application vignette to get results.
+-   Basic documentation.
 
 ## Installation
 

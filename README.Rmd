@@ -24,12 +24,14 @@ With the tools in this package it is possible to obtain inference and estimation
 
 For further details, please refer to the original text.
 
-### Version 0.2.0
+### Version 0.3.0
 
-This version is purely a preliminary version!
+This version is a preliminary version!
 
-- Imports all the required packages.
-- Contains all the functions necessary to do get core results. __Functions have development names.__
+- Contains all the functions necessary to do get core results.
+- Imports necessary packages for functions.
+- Has an simple application vignette to get results.
+- Basic documentation.
 
 ## Installation
 
