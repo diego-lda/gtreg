@@ -59,4 +59,11 @@ All done!
 
 In terms of style, to avoid confusion between objects and functions the soggested style that we will use is the underscore_separated convention.
 
+## Function Map
+
+The picture below shows all the functions in this package as well as how they interact with each other. This can be useful for understanding what functions use what as well as how the package is built.
+
+![Function Map](figures/function_map.png)
+
+
 
