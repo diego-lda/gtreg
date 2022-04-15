@@ -21,11 +21,33 @@ In order to set up this vignette we need to first load the relevant libraries. A
 ```
 library(gtreg)
 
+library(orthogonalsplinebasis)
+library(quantreg)
+library(splines)
+library(MASS)
+library(CVXR)
+library(robustHD)
+library(xtable)
+library(speedglm)
+library(np)
+library(KScorrect)
+library(outliers)
+library(Hmisc)
 library(doParallel)
 library(doRNG)
-cl <- makeCluster(detectCores())
-registerDoParallel(cl)
+registerDoParallel(makeCluster(detectCores()))
 getDoParWorkers()
+
+source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/dataprep4.R")
+source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/xpert8d_ss.R")
+source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/xnss2_ss.R")
+source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/gtr.al10.R")
+source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/gX6.generic.R")
+source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/dnorm2.R")
+source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/EvalBasis.R")
+source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/inner_gtr_c4.R")
+source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/drfunc_basic4.R")
+source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/e0func.R")
 ```
 
 
@@ -39,13 +61,12 @@ After we have loaded the dataset onto R, in order to use the data with this pack
 library(MASS)
 data(mcycle)
 attach(mcycle)
-
-x             <- matrix(times,nc=1)
-y             <- as.numeric(accel)
-nobs          <- length(y)
-ncont         <- 1
-nspline       <- 1
-X.type        <- "continuous"
+x          <- matrix(times,nc=1)
+y          <- as.numeric(accel)
+nobs       <- length(y)
+ncont  <- 1
+nspline <- 1
+X.type <- "continuous"
 ```
 
 
