@@ -30,7 +30,7 @@ cqf_helper <- function(y,x,xgrid,info,Ysing=FALSE,bmat,ng.plot,ydf,yorder,ugrid,
     ygrid.p   <- seq(min(y),max(y),len=ng.plot)
     Bmat      <- matrix(bmat,nr=nr,nc=nc)
     datmatnow <- data_prep(y=ygrid.p,x=xgrid,ygrid=ygrid.p,xgrid=xgrid,bmat=Bmat,
-                          info=info,iyknots=NULL,ydf=ydf,
+                          info=info,y_knots=NULL,ydf=ydf,
                           addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,Ysing=Ysing,
                           returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,#)
                           nxgrid=nxgrid,nygrid=ng.plot,e0mode=e0mode)
@@ -54,7 +54,7 @@ cqf_helper <- function(y,x,xgrid,info,Ysing=FALSE,bmat,ng.plot,ydf,yorder,ugrid,
 
     if(nr==2){
       datmatnow <- data_prep(y=as.numeric(y),x=xgrid,ygrid=ygrid,xgrid=xgrid,bmat=Bmat,
-                            info=info,iyknots=NULL,ydf=ydf,
+                            info=info,y_knots=NULL,ydf=ydf,
                             addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,Ysing=Ysing,
                             returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,#)
                             nxgrid=nxgrid,nygrid=ng.plot,e0mode=e0mode)
@@ -71,7 +71,7 @@ cqf_helper <- function(y,x,xgrid,info,Ysing=FALSE,bmat,ng.plot,ydf,yorder,ugrid,
       while(maa.down==0 || maa.up==0){
 
         datmatnow <- data_prep(y=as.numeric(y),x=xgrid,ygrid=ygrid,xgrid=xgrid,bmat=Bmat,
-                              info=info,iyknots=NULL,ydf=ydf,
+                              info=info,y_knots=NULL,ydf=ydf,
                               addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,Ysing=Ysing,
                               returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,nxgrid=nxgrid,nygrid=ng.plot,e0mode=e0mode)
         if(maa.up==0){
@@ -136,7 +136,7 @@ cqf_helper <- function(y,x,xgrid,info,Ysing=FALSE,bmat,ng.plot,ydf,yorder,ugrid,
       }
 
       datmatnow <- data_prep(y=y,x=xgrid,xgrid=xgridnow,ygrid=line.list[[l]]$y,
-                            bmat=Bmat,info=info,iyknots=NULL,ydf=ydf,yorder=yorder,
+                            bmat=Bmat,info=info,y_knots=NULL,ydf=ydf,yorder=yorder,
                             addxint=TRUE,yorth=FALSE,xorth=FALSE,Ysing=Ysing,e0mode=e0mode,
                             returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,#)
                             nxgrid=length(line.list[[l]]$x),nygrid=length(line.list[[l]]$y))

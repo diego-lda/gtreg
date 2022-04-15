@@ -40,11 +40,13 @@ library(MASS)
 data(mcycle)
 attach(mcycle)
 
-x          <- matrix(times,nc=1)
-y          <- as.numeric(accel)
-nobs       <- length(y)
-ncont  <- 1
-nspline <- 1
-X.type <- "continuous"
+x             <- matrix(times,nc=1)
+y             <- as.numeric(accel)
+nobs          <- length(y)
+ncont         <- 1
+nspline       <- 1
+X.type        <- "continuous"
 ```
+
+
 
