@@ -1,0 +1,50 @@
+---
+title: "Base Example of the gtreg Package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Base Example of the gtreg Package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+### Introduction and Overview
+
+
+In this vignette will illustrate the use of `gtreg` with the estimation of a distributional model for head acceleration in a simulated motorcycle accident, used to test crash helmets.
+
+The estimation of distributional regression functions for this dataset is challenging because the shape of the outcome distribution, head acceleration, given time after impact, varies across time.
+
+### 1) Load the necessary packages.
+
+In order to set up this vignette we need to first load the relevant libraries. As well as loading `gtreg` we need to loas the tools for the parallelisation that we will perform later on.
+
+```
+library(gtreg)
+
+library(doParallel)
+library(doRNG)
+cl <- makeCluster(detectCores())
+registerDoParallel(cl)
+getDoParWorkers()
+```
+
+
+### 2) Load the data.
+
+The dataset consists of 133 consecutive measurements of head acceleration, measured in G forces, throughout the first 60 milliseconds after a crash. This dataset is used as a simple example, that is easy to compute and understand. The data is contained in the `MASS` package.
+
+After we have loaded the dataset onto R, in order to use the data with this package, we set it up and identify its length, `nobs`, and how many dependent variables are continuous. This is stored as the select the number of continuous variables, `ncont`, the number of splines, `nsplines` and a vector that specifies that the dependent variable is continuous `X.type`.
+
+```
+library(MASS)
+data(mcycle)
+attach(mcycle)
+
+x          <- matrix(times,nc=1)
+y          <- as.numeric(accel)
+nobs       <- length(y)
+ncont  <- 1
+nspline <- 1
+X.type <- "continuous"
+```
+
