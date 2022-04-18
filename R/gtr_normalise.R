@@ -44,7 +44,7 @@ gtr_normalise <- function(y,nyg.max=0,plotting=F,eps=1e-5,ygrid=NULL,log.t=F,dop
 
         for(ydf in 2:3){
 
-          mod0 <- gtr.al(y=y,x=x0,gam=gam0,ydf=ydf,yorder=yorder,maxit=500,doprimal=doprimal,nyg.max=nyg.max)
+          mod0 <- gtr_al(y=y,x=x0,gam=gam0,ydf=ydf,yorder=yorder,maxit=500,doprimal=doprimal,nyg.max=nyg.max)
 
           if(length(mod0$BIC)>0){
 
@@ -63,7 +63,7 @@ gtr_normalise <- function(y,nyg.max=0,plotting=F,eps=1e-5,ygrid=NULL,log.t=F,dop
               e0mode <- T
 
               if(length(ygrid)>0){
-                datmat  <- dataprep(y=as.numeric(y),x=x0,Xs=x0,ygrid=ygrid,iyknots=NULL,ydf=ydf0,
+                datmat  <- data_prep(y=as.numeric(y),x=x0,Xs=x0,ygrid=ygrid,iyknots=NULL,ydf=ydf0,
                                     addxint=TRUE,yorder=yorder,nxgrid=0,nygrid=length(ygrid),
                                     yorth=FALSE,xorth=FALSE,Ysing=Ysing,e0mode=F)
                 eta0g <- datmat$sYgrid%*%b0
