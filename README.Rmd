@@ -35,7 +35,7 @@ This version is a preliminary version!
 
 ## Installation
 
-In order to install this package you need to use the Github version. Hopefully in the future a  version will be possible.
+In order to install this package you need to use the Github version. Hopefully in the future a CRAN version will be possible.
 
 Following the steps below, you will be able to install the `gtreg` R package from GitHub, in each of R, R Studio, and Displayr.
 

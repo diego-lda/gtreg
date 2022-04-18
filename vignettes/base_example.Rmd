@@ -16,38 +16,16 @@ The estimation of distributional regression functions for this dataset is challe
 
 ### 1) Load the necessary packages.
 
-In order to set up this vignette we need to first load the relevant libraries. As well as loading `gtreg` we need to loas the tools for the parallelisation that we will perform later on.
+In order to set up this vignette we need to first load the relevant libraries. As well as loading `gtreg` we need to loaD the tools for the parallelisation that we will perform later on.
 
 ```
 library(gtreg)
 
-library(orthogonalsplinebasis)
-library(quantreg)
-library(splines)
-library(MASS)
-library(CVXR)
-library(robustHD)
-library(xtable)
-library(speedglm)
-library(np)
-library(KScorrect)
-library(outliers)
-library(Hmisc)
+
 library(doParallel)
 library(doRNG)
 registerDoParallel(makeCluster(detectCores()))
 getDoParWorkers()
-
-source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/dataprep4.R")
-source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/xpert8d_ss.R")
-source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/xnss2_ss.R")
-source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/gtr.al10.R")
-source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/gX6.generic.R")
-source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/dnorm2.R")
-source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/EvalBasis.R")
-source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/inner_gtr_c4.R")
-source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/drfunc_basic4.R")
-source("/Users/diegolara/Dropbox/GTR/Rcode/ACS/e0func.R")
 ```
 
 
@@ -70,4 +48,176 @@ X.type <- "continuous"
 ```
 
 
+### 3) Modelling choices.
 
+
+```
+yorder.dex    <- c(0,seq(3,4))
+ydf.dex.0     <- seq(3,5)
+xdf.dex       <- c(0,seq(3,6))
+
+# Default settings
+
+lam.vec    <- c(0,0,1,1,1,1)    # Specify which parameters will be penalized. c(1,1,1,1,1,1) means 'all'.
+addxint    <- T
+Ysing      <- F
+AL         <- F
+maxit      <- 500
+threshold  <- 1e-6          # Threshold for zero coef in Lasso
+tol        <- 1e-2
+cval       <- 1e-1          # Lower bound for dedy in monotonicity constraints
+nyg.max    <- 0            # Maximum number of grid points in monotonicity constraints
+beta2      <- T             # Should beta2(X)>0 be checked?
+delta.ok      <- T
+algor      <- "ECOS"
+if(algor=="ECOS"){
+  reltol<-1e-8;feastol<-1e-8;abstol<-1e-8;tol <- 1e-8
+}
+if(algor=="SCS"){
+  reltol<-tol*.1;feastol<-tol*.1;abstol<-tol*.1; tol <- 1e-1
+}
+
+ng.plot     <- 201
+ugrid      <- seq(.05,.95,by=.05)
+nugrid     <- length(ugrid)
+
+
+n_est          <- 20
+n_est.x        <- 20
+xgrid.plot <- sort(runif(n_est.x,-2,2))
+x_mean <- mean(x)
+e_mean <- 0
+qe <- sort(runif(n_est, pnorm(e_mean-2,mean=e_mean),pnorm(e_mean+2,mean=e_mean)))
+```
+
+
+### 4) Estimation.
+
+
+```
+ans0   <- gtr_normalise(y,gam0=0)
+e0     <- ans0$e0
+eta0   <- ans0$eta0
+e0mode <- ans0$e0mode
+
+BIC       <- matrix(NA, nrow = 4, ncol = (1 + (length(yorder.dex)-1)*length(ydf.dex.0))*length(xdf.dex))
+BIC.index <- 1
+
+for (i in 1:length(yorder.dex)){
+
+  if(yorder.dex[i]==0){  ydf.dex <- 0 }
+  if(yorder.dex[i]!=0){  ydf.dex <- ydf.dex.0 }
+
+  for(j in 1:length(ydf.dex)){
+
+    for(k in 1:length(xdf.dex)){
+
+      if(k==1){coord.bare <- 1; coord.spline <- NULL}
+      else{coord.bare <- NULL; coord.spline <- 1}
+
+      mod <- try(
+          gtr_al(y=e0,x=x,X.type=X.type,xdf=xdf.dex[k],ydf=ydf.dex[j],yorder=yorder.dex[i],
+               lam.vec=lam.vec,Ysing=Ysing,nyg.max=nyg.max,maxit=maxit,AL=F,doprimal=F,
+               reltol=reltol,feastol=feastol,abstol=abstol,tol.res=tol,ugrid=ugrid,
+               beta2=T,cval=cval,algor=algor,
+               ng.qgm=ng.plot,coord.bare=coord.bare,coord.spline=coord.spline,method="BIC", delta.ok=delta.ok)
+      )
+      if(e0mode && length(mod$BIC)>0){
+        llf <- sum(log(dnorm(mod$res$e)*as.vector(mod$res$eta)*as.vector(eta0)))
+        mod$BIC <- -2*llf+(mod$nr*mod$nc)*log(n)
+      }
+
+      if(length(mod$BIC)>0){
+        BIC[, BIC.index] = c(i, j, k, mod$BIC[1])
+
+        if(BIC.index==1){ mod.now <- mod; inow <- jnow <- know <- 1 }
+        if(BIC.index>1 && min(BIC[4, 1:(BIC.index-1)], na.rm = T) > BIC[4, BIC.index]){
+          mod.now <- mod
+          inow <- i
+          jnow <- j
+          know <- k
+        }
+      }
+      BIC.index <- BIC.index + 1
+
+    }
+
+  }
+
+}
+```
+
+
+### 5) Store Results.
+
+
+
+```
+mod <- mod.now
+index.now <- c(inow, jnow, know)
+nyg.now <- mod$nyg
+
+nr        <- mod$nr
+nc        <- mod$nc
+Bmat = b = bmat <- mod$res$bmat
+e   <- mod$res$e
+eta <- mod$res$eta
+
+rm(mod);
+```
+
+
+
+
+### 6) Further Processing.
+
+
+
+```
+if(xdf.dex[know] == 0){
+  info       <- data_info(x=x, X.type=X.type, xdf=xdf.dex[know], coord.bare=1, delta.ok=delta.ok)
+}else{
+  info         <- data_info(x=x, X.type=X.type, xdf=xdf.dex[know], coord.spline=1, delta.ok=delta.ok)
+}
+if(yorder.dex[inow]==0){
+  ydf.dex <- 0
+}else{
+  ydf.dex <- ydf.dex.0
+}
+
+gtr.Fyx.hat <- pnorm(e)
+if(!e0mode){ gtr.fyx.hat <- dnorm(e)*as.vector(eta) }
+if(e0mode){ gtr.fyx.hat <- dnorm(e)*as.vector(eta)*as.vector(eta0) }
+
+line.list <- cqf_helper(
+  y = e0,
+  x = x,
+  xgrid = as.matrix(xgrid.plot),
+  info = info,
+  Ysing = Ysing,
+  bmat = bmat,
+  ng.plot = ng.plot,
+  ydf = ydf.dex[jnow],
+  yorder = yorder.dex[inow],
+  ugrid = qe,
+  nr = nr,
+  nc = nc,
+  e0mode = e0mode
+);
+nlevel       <- line.list$nlevel
+quantile.gtr <- line.list$line.list
+log.t <- F
+ifelse(identical(log(y),e0), log.t <- T, e0inv <- approxfun(e0,y))
+
+m.gtr <- matrix(NA, nrow = length(xgrid.plot), ncol = n_est)
+for (pp in 1:n_est){
+  if(e0mode){
+    ifelse(log.t,m.gtr[,pp] <- exp(quantile.gtr[[pp]]$y),
+           m.gtr[,pp] <- e0inv(quantile.gtr[[pp]]$y))
+  }else{
+    m.gtr[,pp] <- quantile.gtr[[pp]]$y
+  }
+}
+
+m.gtr2 <- m.gtr
+```
