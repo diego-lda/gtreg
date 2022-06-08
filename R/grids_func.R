@@ -42,10 +42,16 @@ grids_func <- function(x, X.type, nxgrid=101, grid.user = NULL, gridx.cont=F){
       }
     }
 
-    if(length(nxgrid)==1 && length(grid.user)>0){
+    if(length(nxgrid)==1 && length(grid.user)!= length(X.type) && length(grid.user)>0){
       xgrid[[1]] <- seq(min(x[X.c.dex[1]]),max(x[X.c.dex[1]]),len=nxgrid[1])
       for(i in 2:ncov.cont){
         xgrid[[i]] <- grid.user[[i-1]]
+      }
+    }
+
+    if(length(nxgrid)==1 && length(grid.user) == length(X.type)){
+      for(i in 1:ncov.cont){
+        xgrid[[i]] <- grid.user[[i]]
       }
     }
 
@@ -61,9 +67,20 @@ grids_func <- function(x, X.type, nxgrid=101, grid.user = NULL, gridx.cont=F){
     X.fac.dex    <- which(X.type=="discrete")
     xvals        <- list()
     for(i in 1:length(X.fac.dex)){
-      ifelse(length(grid.user)==0,
-             xvals[[i]] <- sort(unique(unlist(x[X.fac.dex[i]]))),
-             xvals[[i]] <- sort(unique(grid.user[[(ncov.cont-1)+i]])))
+      if(length(grid.user)==0){
+        xvals[[i]] <- sort(unique(unlist(x[X.fac.dex[i]])))
+      }
+      if(length(grid.user)>0){
+        if(length(grid.user) != length(X.type)){
+          xvals[[i]] <- sort(unique(grid.user[[(ncov.cont-1)+i]]))
+        }
+        if(length(grid.user)>0 && length(grid.user) != length(X.type) && length(grid.user)>0){
+          xvals[[i]] <- sort(unique(grid.user[[(ncov.cont-1)+i]]))
+        }
+        if(length(grid.user)>0 && length(grid.user) == length(X.type)){
+          xvals[[i]] <- sort(unique(grid.user[[ncov.cont+i]]))
+        }
+      }
     }
     xvals.list <- as.matrix(expand.grid(xvals))
 
