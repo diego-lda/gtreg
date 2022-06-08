@@ -217,7 +217,6 @@ gtr_solve <- function(TYX,tYX,Kscore=0,gam=0,egam=0,lam=0,lam.vec=NULL,maxit=200
 
       ans$this.call <- sys.call()
       ans$time.CVXR <- time.CVXR
-      #stop(44)
       return(ans)
     }
   }
