@@ -57,7 +57,7 @@ gtr_compute <- function(TYX,tYX,y,x,
                         xgrid.qgm=NULL,Xs.qgm=NULL,sYgrid.qgm=NULL,
                         info,yorder,ydf,y_knots=NULL,Ysing,maxit,nXs,nYS,
                         lam.vec=NULL,gam=0,ugrid=NULL,dedy.min=NULL,doprimal=F,
-                        tol.res,bounded=F,Cbound=Inf,cval=1e-1,algor="ECOS",easy=T, threshold=1e-5,e0mode=F){
+                        tol.res,bounded=F,Cbound=Inf,cval=1e-1,algor="ECOS",easy=T, threshold=1e-5,e0mode=F, eta.check = F){
 
   M <- diag(1,nXs*nYS,nXs*nYS)
   nzeros <- length(zeros)

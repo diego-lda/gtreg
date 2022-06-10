@@ -46,7 +46,8 @@ gtr_compute(
   algor = "ECOS",
   easy = T,
   threshold = 1e-05,
-  e0mode = F
+  e0mode = F,
+  eta.check = F
 )
 }
 \arguments{
