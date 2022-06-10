@@ -80,7 +80,7 @@ gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
     # Check that each spline component as xdf defined:
     if(length(coord.spline)>0){stopifnot(length(xdf)==length(coord.spline))}
 
-    xgrid.qgm  <- grids.func(x=x, X.type=X.type, nxgrid=ng.qgm, gridx.cont=T)
+    xgrid.qgm  <- grids_func(x=x, X.type=X.type, nxgrid=ng.qgm, gridx.cont=T)
     ygrid.qgm  <- seq(min(y),max(y),len=ng.qgm)
 
     res0       <- NULL
@@ -158,7 +158,7 @@ gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
         rm(datmat)
       }
 
-      ans <- gtr_solve(nyg=nyg,TYX=TYX,tYX=tYX,gam=gam,reltol=reltol,feastol=feastol,abstol=abstol,
+      ans <- gtr_compute( nyg=nyg,TYX=TYX,tYX=tYX,gam=gam,reltol=reltol,feastol=feastol,abstol=abstol,
                           doprimal=doprimal,lam.vec=lam.vec,
                           y=y,x=x,info=info,yorder=yorder,ydf=ydf,
                           Ysing=Ysing,nYS=nYS,nXs=nXs,
@@ -305,7 +305,7 @@ gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
           tYXnow  <- tYX[,-zeros]
         }
 
-        ans     <- gtr_solve( nyg=nyg,TYX=TYXnow,tYX=tYXnow,gam=gam.grid[gg],weights=weights,zeros=zeros,
+        ans     <- gtr_compute( nyg=nyg,TYX=TYXnow,tYX=tYXnow,gam=gam.grid[gg],weights=weights,zeros=zeros,
                                 reltol=reltol,feastol=feastol,abstol=abstol,
                                 doprimal=doprimal,lam.vec=lam.vec,
                                 y=y,x=x,info=info,yorder=yorder,ydf=ydf,
