@@ -70,7 +70,7 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
   }
 
   process.x <- T
-  if(!is.null(Xs)){
+  if(!is.null(Xs) && !returnTZg){
     process.x <- F
     nXs <- ncol(Xs)
     if(!is.list(xgrid)){
@@ -98,10 +98,20 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
 
     if(ydf > 0){
 
-      if(is.null(y_knots)){y_knots <- quantile(y,probs=seq(0,1,length=ydf))}
+      if(!e0mode){
+        yabsmax <- max(abs(y))
+        if(is.null(y_knots)){
+          y_knots <- quantile(y,probs=seq(0,1,length=ydf))
+          y_knots[1] <- -delta*yabsmax
+          y_knots[length(y_knots)] <- delta*yabsmax
+        }
+      }
+      if(e0mode){
+        if(is.null(y_knots)){iyknots <- quantile(y,probs=seq(0,1,length=ydf))}
+      }
 
-      y_knots[[1]] <- round_any(y_knots[[1]],0.001,floor)
-      y_knots[[length(y_knots)]] <- round_any(y_knots[[length(y_knots)]],0.001,ceiling)
+      y_knots[[1]] <- plyr::round_any(y_knots[[1]],0.001,floor)
+      y_knots[[length(y_knots)]] <- plyr::round_any(y_knots[[length(y_knots)]],0.001,ceiling)
       y_knots <- round(y_knots,3)
       names(y_knots) <- NULL
 
@@ -132,7 +142,7 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
 
       if(gridy.mode){
         Ygrid <- ygrid
-
+        #Prepare for loc.-scale extrapolation outside empirical Y support
         if(extrapolate == T){
           ext.dex.l <- which(ygrid<y_knots[1])
           ext.dex.u <- which(ygrid>y_knots[length(y_knots)])
@@ -291,11 +301,27 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
         for(i in 1:nvars){
           ifelse(length(as.matrix(xgrid$xgrid[[i]]))!=nxgrid, ngrids <- length(xgrid$xgrid[[i]][,1])/nxgrid, ngrids <- 1)
           xgrid.subset <- split(as.data.frame(xgrid$xgrid[[i]]), rep(1:ngrids, each = nxgrid))
-          Xsgrid.tmp[[i]] <- foreach(j = 1:ngrids, .packages=c("orthogonalsplinebasis", "splines","gtreg")) %dopar% {
-            if(addxint) Xsgrid.now <- cbind(1,as.matrix(gX6(X=as.data.frame(xgrid.subset[[j]]),info=info,orth=xorth)))#,
-            if(!addxint) Xsgrid.now <- as.matrix(gX6(X=as.data.frame(xgrid.subset[[j]]),info=info,orth=xorth))
-            return(Xsgrid.now)
+
+          ## NEEDS CLEANING
+          if(!returnTZg){
+
+            Xsgrid.tmp <- foreach(j = 1:ngrids, .packages=c("orthogonalsplinebasis", "splines", "gtreg")) %dopar% {
+
+              if(addxint) Xsgrid.now <- cbind(1,as.matrix(gX6(X=as.data.frame(xgrid.subset[[j]]),info=info,orth=xorth)))#,
+              if(!addxint) Xsgrid.now <- as.matrix(gX6(X=as.data.frame(xgrid.subset[[j]]),info=info,orth=xorth))
+
+              return(Xsgrid.now)
+            }
           }
+
+          if(returnTZg){
+            Xsgrid.tmp <- list()
+            for(j in 1:ngrids){
+              if(addxint) Xsgrid.tmp[[j]] <- cbind(1,as.matrix(gX6(X=as.data.frame(xgrid.subset[[j]]),info=info,orth=xorth)))#,
+              if(!addxint) Xsgrid.tmp[[j]] <- as.matrix(gX6(X=as.data.frame(xgrid.subset[[j]]),info=info,orth=xorth))
+            }
+          }
+
 
           Xsgrid[[i]]  <- array(0,c(nxgrid,nXs,ngrids))
           for(j in 1:ngrids){
@@ -399,34 +425,22 @@ data_prep <- function(y,x,info=NULL,ygrid=NULL,xgrid=NULL,
       for(i in 1:length(Xsgrid)){
         TZgrid[[i]] <- array(0,c(nygrid,nXs*nYS,nrow(Xsgrid[[i]]),ngrids))
         tZgrid[[i]] <- array(0,c(nygrid,nXs*nYS,nrow(Xsgrid[[i]]),ngrids))
-        TZgrid.pl[[i]] <- array(0,c(nygrid,nXs*nYS,nrow(Xsgrid[[i]]),ngrids))
-        tZgrid.pl[[i]] <- array(0,c(nygrid,nXs*nYS,nrow(Xsgrid[[i]]),ngrids))
-        #      TZgrid <- array(0,c(nrow(SYgrid),ncol(SYgrid)*ncol(Xsgrid),nrow(Xsgrid)))
-        #      tZgrid <- array(0,c(nrow(SYgrid),ncol(SYgrid)*ncol(Xsgrid),nrow(Xsgrid)))
-        if(!is.null(mask)){
-          TZgrid.pl <- list()
-          tZgrid.pl <- list()
-        }
+        TZgrid.pl[[i]] <- array(0,c(nygrid,nXs*nYS-length(which(mask==0)),nrow(Xsgrid[[i]]),ngrids))
+        tZgrid.pl[[i]] <- array(0,c(nygrid,nXs*nYS-length(which(mask==0)),nrow(Xsgrid[[i]]),ngrids))
+
         for(j in 1:ngrids){
-          TZgrid[[i]][,,,j] <- tz_form(X=matrix(Xsgrid[[i]][1,,j],nr=nygrid,nc=ncol(Xsgrid[[i]]),byrow=T),Y=SYgrid)
-          tZgrid[[i]][,,,j] <- tz_form(X=matrix(Xsgrid[[i]][1,,j],nr=nygrid,nc=ncol(Xsgrid[[i]]),byrow=T),Y=sYgrid)
-          if(is.null(mask)){ TZgrid.pl <- NULL; tZgrid.pl <- NULL }
-          if(!is.null(mask)){
-            TZgrid.pl[[i]][,,,j] <- TZgrid[[i]][,,j][,which(mask==1)]
-            tZgrid.pl[[i]][,,,j] <- tZgrid[[i]][,,j][,which(mask==1)]
+          for(k in 1:nrow(Xsgrid[[i]][,,j])){
+
+            TZgrid[[i]][,,k,j] <- tz_form(Y=SYgrid, X=matrix(Xsgrid[[i]][k,,j],nr=nygrid,nc=ncol(Xsgrid[[i]]),byrow=T))
+            tZgrid[[i]][,,k,j] <- tz_form(Y=sYgrid, X=matrix(Xsgrid[[i]][k,,j],nr=nygrid,nc=ncol(Xsgrid[[i]]),byrow=T))
+
+            if(is.null(mask)){ TZgrid.pl <- NULL; tZgrid.pl <- NULL }
+            if(!is.null(mask)){
+              TZgrid.pl[[i]][,,k,j] <- TZgrid[[i]][,,k,j][,which(mask==1)]
+              tZgrid.pl[[i]][,,k,j] <- tZgrid[[i]][,,k,j][,which(mask==1)]
+            }
           }
         }
-      }
-      if(is.matrix(Xsgrid)){
-        for(i in 1:nrow(Xsgrid)){
-          TZgrid[,,i] <- tz_form(X=Xsgrid[i,],Y=SYgrid)
-          tZgrid[,,i] <- tz_form(X=Xsgrid[i,],Y=sYgrid)
-          if(!is.null(mask)){
-            TZgrid.pl[[i]] <- TZgrid[,which(mask==1),i]
-            tZgrid.pl[[i]] <- tZgrid[,which(mask==1),i]
-          }
-        }
-        if(is.null(mask)){ TZgrid.pl <- NULL; tZgrid.pl <- NULL }
       }
     }
     #}

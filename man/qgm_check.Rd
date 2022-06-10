@@ -18,7 +18,7 @@ qgm_check(
   ydf,
   yorder,
   y_knots = NULL,
-  info = info,
+  info,
   Ysing = FALSE,
   delta = 1,
   easy = F,

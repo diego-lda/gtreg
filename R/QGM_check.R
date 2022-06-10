@@ -27,7 +27,7 @@
 #'
 #' @examples
 qgm_check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=101,nygrid,ng.qgm=201,nXs,nYS,ydf,yorder,y_knots=NULL,
-                      info=info,Ysing=FALSE,delta=1,easy=F,zeros=NULL,e0mode=T){
+                      info,Ysing=FALSE,delta=1,easy=F,zeros=NULL,e0mode=T){
 
   nobs        <- length(y)
   ygrid.qgm   <- seq(min(y),max(y),len=ng.qgm)
@@ -65,8 +65,14 @@ qgm_check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
                             info=info,y_knots=y_knots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
                             Ysing=Ysing,e0mode=e0mode,returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,nxgrid=nxgrid,nygrid=nygrid)
     dBetaY <- datmat.mono$sYgrid%*%t(Bmat)
+    dBetaY <- datmat.mono$sYgrid%*%t(Bmat)
     #lmin   <- cbind(1,matrix(c(min(x)-.1*(max(x)-min(x)),max(x)+.1*(max(x)-min(x))),nr=2,nc=1))%*%t(dBetaY)
     lmin   <- cbind(1,matrix(c(min(x),max(x)),nr=2,nc=1))%*%t(dBetaY)
+
+    #Sanity check
+    san <- min(cbind(1,matrix(c(min(x),max(x)),nr=2,nc=1))%*%t(BetaY))>min(y)
+    if(!san) lmin <- -1
+
     datmat.mono$dedygrid <- min(lmin)
   }
 

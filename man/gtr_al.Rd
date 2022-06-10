@@ -29,8 +29,7 @@ gtr_al(
   lb = 1,
   threshold = 1e-05,
   e0mode = F,
-  unconstrained = T,
-  constrained = T,
+  constrained = F,
   AL = F,
   doprimal = F,
   fac = 1,
@@ -40,7 +39,7 @@ gtr_al(
   beta2 = F,
   Cbound = Inf,
   ugrid = seq(0.1, 0.9, by = 0.1),
-  gam.grid = log_space(-3, 3, 20),
+  gam.grid = logspace(-3, 3, 20),
   algor = "ECOS",
   coord.bare = NULL,
   coord.spline = NULL,
@@ -48,7 +47,8 @@ gtr_al(
   easy = T,
   method = "BIC",
   delta.ok = F,
-  parallel = F
+  parallel = F,
+  eta.check = T
 )
 }
 \arguments{

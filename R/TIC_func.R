@@ -28,7 +28,7 @@ tic_func <- function(res,TZ,tZ,Ginv=T,Adex=NULL,method="TIC"){
 
     if(min(eta)>0){
 
-      llf      <- sum(log(dnorm(e)*eta))
+      llf      <- sum(log(dnorm(e)*as.vector(eta)))
       gradmat  <- -TZ*as.vector(e)+tZ*as.vector(1/eta)
       grad2    <- t(gradmat)%*%gradmat
       hessmat  <- -(t(TZ)%*%TZ+t(tZ/as.vector(eta))%*%(tZ/as.vector(eta)))
