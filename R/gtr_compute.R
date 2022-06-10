@@ -48,6 +48,8 @@
 #' @return
 #' @export
 #'
+#'
+#' @importFrom outliers grubbs.test
 #' @examples
 gtr_compute <- function(TYX,tYX,y,x,
                         nyg=0,ng.qgm,weights=1,zeros=NULL,
