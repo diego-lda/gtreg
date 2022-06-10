@@ -204,10 +204,10 @@ gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
     if( !parallel && (length(res.sol)>0 && min(res.sol$eta)>.Machine$double.eps )
         || parallel && (length(res.sol$bmat)>0 && min(res.sol$eta)>.Machine$double.eps)){
       nXs       <- ncol(datmat.now$Xs)
-      if(gam==0){ BIC.vec   <- TIC.func(res=res.sol,TZ=datmat.now$TZ,tZ=datmat.now$tZ,method=method,Ginv=T) }
+      if(gam==0){ BIC.vec   <- tic_func(res=res.sol,TZ=datmat.now$TZ,tZ=datmat.now$tZ,method=method,Ginv=T) }
       if(gam>.Machine$double.eps){
         Adex <- which(abs(res.sol$bmat)>=threshold)
-        BIC.vec <- TIC.func(res=res.sol,TZ=datmat.now$TZ,tZ=datmat.now$tZ,Adex=Adex,method=method,Ginv=T)
+        BIC.vec <- tic_func(res=res.sol,TZ=datmat.now$TZ,tZ=datmat.now$tZ,Adex=Adex,method=method,Ginv=T)
       }
     }
     rm(datmat.now)
@@ -329,7 +329,7 @@ gtr_al <- function(y,x,X.type=NULL,gam=0,lam.vec=rep(1,6),xdf=0,ydf=4,yorder=4,n
           TYXnow <- TYX[,-zeros]
           tYXnow <- tYX[,-zeros]
         }
-        BIC.now       <- TIC.func(res=ans0[[ggnow]],TZ=TYXnow,tZ=tYXnow,method=method,Ginv=T)
+        BIC.now       <- tic_func(res=ans0[[ggnow]],TZ=TYXnow,tZ=tYXnow,method=method,Ginv=T)
         objval.bic    <- c(objval.bic, BIC.now)
       }
     }
