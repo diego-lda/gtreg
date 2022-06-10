@@ -27,4 +27,5 @@ Imports:
     robustHD,
     xtable,
     doRNG,
-    doParallel
+    doParallel,
+    outliers,
