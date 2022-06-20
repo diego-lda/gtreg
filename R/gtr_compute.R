@@ -61,6 +61,18 @@ gtr_compute <- function(TYX,tYX,y,x,
                         lam.vec=NULL,gam=0,ugrid=NULL,dedy.min=NULL,doprimal=F,
                         tol.res,bounded=F,Cbound=Inf,cval=1e-1,algor="ECOS",easy=T, threshold=1e-5,e0mode=F, eta.check = F){
 
+  # =========
+  setup <- matrix(0,2,2) # Keep track of algo and problem formulation
+  rownames(setup) <- c("ECOS","SCS")
+  colnames(setup) <- c("Primal","Dual")
+  if(algor=="ECOS"){
+    ifelse(doprimal, setup[1,1] <- 1, setup[1,2] <- 1)
+    }
+  else{
+    ifelse(doprimal, setup[2,1] <- 1, setup[2,1] <- 1)
+    }
+  # =========
+
   M <- diag(1,nXs*nYS,nXs*nYS)
   nzeros <- length(zeros)
   if(nzeros>0){
@@ -211,12 +223,12 @@ gtr_compute <- function(TYX,tYX,y,x,
           # Check QGM
           if(nXs > 1){
             if(nYS>2){
-              datmat.mono <- qgm_check(y=y,x=x,xgrid=xgrid.qgm,res=res0,Ysing=Ysing,iyknots=iyknots,ugrid=ugrid,ng.qgm=ng.qgm,nxgrid=ng.qgm,nygrid=ng.qgm,nXs=nXs,nYS=nYS,ydf=ydf,yorder=yorder,info=info,easy=T,zeros=zeros,e0mode=e0mode)
+              datmat.mono <- qgm_check(y=y,x=x,xgrid=xgrid.qgm,res=res0,Ysing=Ysing,y_knots=y_knots,ugrid=ugrid,ng.qgm=ng.qgm,nxgrid=ng.qgm,nygrid=ng.qgm,nXs=nXs,nYS=nYS,ydf=ydf,yorder=yorder,info=info,easy=T,zeros=zeros,e0mode=e0mode)
               mdedy       <- min(datmat.mono$dedygrid)
               if( mdedy>.Machine$double.eps && !easy ){
                 cat("Calling qgm_check\n")
                 t_start <- Sys.time()
-                datmat.mono <- qgm_check(y=y,x=x,xgrid.qgm=xgrid.qgm,res=res0,Ysing=Ysing,iyknots=iyknots,ugrid=ugrid,ng.qgm=ng.qgm,nxgrid=ng.qgm,nygrid=ng.qgm,nXs=nXs,nYS=nYS,ydf=ydf,yorder=yorder,info=info,easy=F,zeros=zeros,e0mode=e0mode)
+                datmat.mono <- qgm_check(y=y,x=x,xgrid.qgm=xgrid.qgm,res=res0,Ysing=Ysing,y_knots=y_knots,ugrid=ugrid,ng.qgm=ng.qgm,nxgrid=ng.qgm,nygrid=ng.qgm,nXs=nXs,nYS=nYS,ydf=ydf,yorder=yorder,info=info,easy=F,zeros=zeros,e0mode=e0mode)
                 t_end <- Sys.time()
                 t_check <- t_end - t_start
                 cat(paste("It took =",round(t_check,digits=3),"\n"))

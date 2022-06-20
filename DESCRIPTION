@@ -9,7 +9,7 @@ Description: This package implements the Gaussian Transform Regression from "Gau
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 URL: https://github.com/diego-lda/gtreg
 BugReports: https://github.com/diego-lda/gtreg/issues
 Suggests:

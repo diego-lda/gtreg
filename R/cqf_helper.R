@@ -188,8 +188,24 @@ cqf_helper <- function(y,x,xgrid,info,Ysing=FALSE,bmat,ng.plot,ydf,yorder,ugrid,
     print(nlevel)
   }
 
-  ans    <- list(line.list=line.list,lmin=lmin,nlevel=nlevel)
 
+  if(e0mode){
+    line.list.now <- line.list
+    for (pp in 1:nlevel){
+      if(log.t){
+        line.list[[pp]]$y <- exp(line.list[[pp]]$y)
+      }else{
+        line.list.now[[pp]]$y <- e0inv(line.list[[pp]]$y)
+        nas <- which(is.na(line.list.now[[pp]]$y))
+        if(length(nas)>0){
+          line.list.now[[pp]]$y[nas] <- approxExtrap(e0,y,rule=2,xout=line.list[[pp]]$y[nas])$y
+        }
+        line.list[[pp]]$y <- line.list.now[[pp]]$y
+      }
+    }
+  }
+
+  ans    <- list(line.list=line.list,lmin=lmin,nlevel=nlevel)
   return(ans)
 
 }

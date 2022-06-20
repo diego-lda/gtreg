@@ -64,9 +64,8 @@ qgm_check <- function(y,x,res,xgrid.qgm=seq(min(x),max(x),len=101),ugrid,nxgrid=
     datmat.mono <- data_prep(y=as.numeric(y),x=x,xgrid=xgrid.qgm,ygrid=ygrid.qgm,bmat=Bmat,
                             info=info,y_knots=y_knots,ydf=ydf,addxint=TRUE,yorder=yorder,yorth=FALSE,xorth=FALSE,
                             Ysing=Ysing,e0mode=e0mode,returnTZ=F,returnTZg=F,plot.mode=T,delta=delta,nxgrid=nxgrid,nygrid=nygrid)
+    BetaY <- datmat.mono$SYgrid%*%t(Bmat)
     dBetaY <- datmat.mono$sYgrid%*%t(Bmat)
-    dBetaY <- datmat.mono$sYgrid%*%t(Bmat)
-    #lmin   <- cbind(1,matrix(c(min(x)-.1*(max(x)-min(x)),max(x)+.1*(max(x)-min(x))),nr=2,nc=1))%*%t(dBetaY)
     lmin   <- cbind(1,matrix(c(min(x),max(x)),nr=2,nc=1))%*%t(dBetaY)
 
     #Sanity check
