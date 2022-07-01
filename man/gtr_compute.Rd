@@ -53,9 +53,6 @@ gtr_compute(
 \arguments{
 \item{e0mode}{}
 }
-\value{
-
-}
 \description{
 This function does the inner computation for GTR. Used to be called "inner gtr".
 }

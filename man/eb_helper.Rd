@@ -9,9 +9,6 @@ eb_helper(x, M, knots, order)
 \arguments{
 \item{order}{}
 }
-\value{
-
-}
 \description{
 This function helps to evluate the basis functions.
 }

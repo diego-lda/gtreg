@@ -9,9 +9,6 @@ tzb_form(Xs, SYfunc, sYfunc, Ygrid, nsim = 29)
 \arguments{
 \item{nsim}{}
 }
-\value{
-
-}
 \description{
 This function makes a giant constraint matrix, with Ygrid the same for every observation. Ygrid has already been processed into sYgrid, i.e. s(Ygrid), which is a matrix nYgrid by nSY.
 }

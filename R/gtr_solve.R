@@ -306,7 +306,7 @@ gtr_solve <- function(TYX,tYX,Kscore=0,gam=0,egam=0,lam=0,lam.vec=NULL,maxit=200
         }
       }
 
-      if(nYS!=2){
+      if(nYS > 2){
 
         if(nXs > 2){
 
@@ -366,11 +366,9 @@ gtr_solve <- function(TYX,tYX,Kscore=0,gam=0,egam=0,lam=0,lam.vec=NULL,maxit=200
           dedy.grid  <- function(b){
 
             if(packageVersion("CVXR") > "0.99-7") {
-              #BetaY <- sYgrid%*%reshape_expr(M%*%b,c(nXs,nYS))
               BetaY <- sYgrid%*%reshape_expr(M%*%b,c(nYS,nXs))
             }
             else{
-              #BetaY <- sYgrid%*%t(reshape_expr(M%*%b,nXs,nYS))
               BetaY <- sYgrid%*%t(reshape_expr(M%*%b,nYS,nXs))
             }
 
@@ -457,7 +455,6 @@ gtr_solve <- function(TYX,tYX,Kscore=0,gam=0,egam=0,lam=0,lam.vec=NULL,maxit=200
     if(length(pen)>0 || bounded || beta2){  prob <- Problem(Maximize(obj),constr) }
     ecosolve.verbose <- as.integer(!silent)
     if(algor=="SCS"){
-      #maxit <-5000
       try( solver.out1 <- solve(prob,solver=algor,verbose=!silent,max_iters=as.integer(maxit),eps=reltol) )
       #solver.out1$status
     }

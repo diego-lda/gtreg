@@ -11,9 +11,6 @@ cm_contract(cm, buse)
 
 \item{buse}{A matrix with the Betas to use.}
 }
-\value{
-
-}
 \description{
 This contracts a 'contributions' (n by big) matrix by the mask in buse, by removing the appropriate columns.
 }

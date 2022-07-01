@@ -9,9 +9,6 @@ calibrate_coef(Y, X, qY = NULL, dgp = "dr", link = "probit")
 \arguments{
 \item{link}{}
 }
-\value{
-
-}
 \description{
 This function calibrates coefficients.
 }

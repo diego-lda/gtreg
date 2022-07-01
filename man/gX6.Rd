@@ -9,9 +9,6 @@ gX6(X, info, orth = FALSE)
 \arguments{
 \item{orth}{}
 }
-\value{
-
-}
 \description{
 This calls the useMethod for gX6.
 }

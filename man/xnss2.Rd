@@ -49,9 +49,6 @@ xnss2(
 \arguments{
 \item{R}{}
 }
-\value{
-
-}
 \description{
 This is a workhorse solver for the problem.
 }

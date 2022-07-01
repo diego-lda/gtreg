@@ -9,9 +9,6 @@ eval_basis(object, x, ...)
 \arguments{
 \item{...}{}
 }
-\value{
-
-}
 \description{
 This function evluates the basis functions. It is based closely on evaluate method for spline basis in package orthogonalsplinebasis, but about 30% faster.
 }

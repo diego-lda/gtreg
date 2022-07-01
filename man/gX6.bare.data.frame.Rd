@@ -9,9 +9,6 @@
 \arguments{
 \item{X}{}
 }
-\value{
-
-}
 \description{
 This is the bare dataframe function version for gX6.
 }

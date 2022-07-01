@@ -24,9 +24,6 @@ cqf_helper(
 \arguments{
 \item{e0mode}{}
 }
-\value{
-
-}
 \description{
 This function runs some stuff necessary to get the conditional quantile functions.
 }

@@ -9,9 +9,6 @@
 \arguments{
 \item{xord}{}
 }
-\value{
-
-}
 \description{
 This is the spline dataframe function version for gX6.
 }

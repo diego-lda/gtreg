@@ -11,9 +11,6 @@ grids_func(x, X.type, nxgrid = 101, grid.user = NULL, gridx.cont = F)
 
 \item{gridx.cont}{}
 }
-\value{
-
-}
 \description{
 This generates the grids of values for the explanatory variable.
 }

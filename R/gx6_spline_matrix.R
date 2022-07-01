@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-gX6.spline.matrix <- function(info,X,orth=FALSE,xord=4){
+gX6_spline.matrix <- function(info,X,orth=FALSE,xord=4){
   if(is.null(info$knots)){
     print("barf in gX6.spline")
     stop(82)

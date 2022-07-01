@@ -9,9 +9,6 @@ tic_func(res, TZ, tZ, Ginv = T, Adex = NULL, method = "TIC")
 \arguments{
 \item{method}{}
 }
-\value{
-
-}
 \description{
-
+TIC Function
 }

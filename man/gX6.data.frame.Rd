@@ -9,9 +9,6 @@
 \arguments{
 \item{orth}{}
 }
-\value{
-
-}
 \description{
 This is the main dataframe function for gX6.
 }

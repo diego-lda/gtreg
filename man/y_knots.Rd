@@ -9,9 +9,6 @@ y_knots(y, e0mode = F, ydf, yorder, delta = 1)
 \arguments{
 \item{delta}{}
 }
-\value{
-
-}
 \description{
 This function generates the knots for the dependent variable.
 }

@@ -18,9 +18,6 @@ gtr_normalise(
 \arguments{
 \item{gam0}{}
 }
-\value{
-
-}
 \description{
 This function performs a transformation to normality, or at least to the real line.
 }

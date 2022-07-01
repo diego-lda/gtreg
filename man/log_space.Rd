@@ -9,9 +9,6 @@ log_space(a, b, n)
 \arguments{
 \item{n}{}
 }
-\value{
-
-}
 \description{
 This function does a log transformation onto the log space.
 }

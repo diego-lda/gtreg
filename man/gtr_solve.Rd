@@ -38,9 +38,6 @@ gtr_solve(
 \arguments{
 \item{threshold}{}
 }
-\value{
-
-}
 \description{
 This function solves the optimisation problem. Used to be Xpert8d_ss.
 }
