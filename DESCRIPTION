@@ -1,7 +1,7 @@
 Package: gtreg
 Type: Package
 Title: Implements Gaussian Transform Regression
-Version: 0.4.0
+Version: 0.4.1
 Author: Sami Stouli <s.stouli@bristol.ac.uk>, Richard Spady <rspady@jhu.edu>, Xiaoran Liang <xl15923@bristol.ac.uk>, Diego Lara <d.laradeandres@bristol.ac.uk> 
 Maintainer: Diego Lara <d.laradeandres@bristol.ac.uk> 
 Description: This package implements the Gaussian Transform Regression from "Gaussian transforms modeling and the estimation of distributional regression functions" Spady and Stouli (2020).

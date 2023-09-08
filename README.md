@@ -31,6 +31,12 @@ This version is a preliminary version!
 In this version new changes add solvers that use the `gtregpy` python package
 to solve the gtr problem using reticulate.
 
+#### New in 0.4.1
+
+Some bug fixes to versioning for package updating
+
+
+
 ## Installation
 
 In order to install this package you need to use the Github version.
