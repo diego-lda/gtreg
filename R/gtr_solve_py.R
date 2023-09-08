@@ -17,7 +17,7 @@ gtr_solve_py <- function(TYX, tYX) {
   gtregpy <- import("gtregpy")
 
   # Call the gtr_solve function from the Python package
-  result <- gtregpy$gtr_solve(TYX, tYX)
+  result <- gtregpy$compute_basic(TYX, tYX)
 
   # Return the result to R
   return(result)

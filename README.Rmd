@@ -24,14 +24,19 @@ With the tools in this package it is possible to obtain inference and estimation
 
 For further details, please refer to the original text.
 
-### Version 0.3.0
+### Version 0.4.0
 
 This version is a preliminary version!
 
-- Contains all the functions necessary to do get core results.
-- Imports necessary packages for functions.
-- Has an simple application vignette to get results.
-- Basic documentation.
+-   Contains all the functions necessary to do get core results.
+-   Imports necessary packages for functions.
+-   Has an simple application vignette to get results.
+-   Basic documentation.
+
+#### New in 0.4.0
+
+In this version new changes add solvers that use the `gtregpy` python package
+to solve the gtr problem using reticulate.
 
 ## Installation
 

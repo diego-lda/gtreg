@@ -17,7 +17,7 @@ functions implied by flexible Gaussian representations.
 
 For further details, please refer to the original text.
 
-### Version 0.3.0
+### Version 0.4.0
 
 This version is a preliminary version!
 
@@ -25,6 +25,11 @@ This version is a preliminary version!
 -   Imports necessary packages for functions.
 -   Has an simple application vignette to get results.
 -   Basic documentation.
+
+#### New in 0.4.0
+
+In this version new changes add solvers that use the `gtregpy` python package
+to solve the gtr problem using reticulate.
 
 ## Installation
 
